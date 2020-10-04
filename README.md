@@ -16,6 +16,12 @@ Agent written in Java (SpringBoot) which executes low-level commands.
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/20bec8d5bf1b4197b6447b9f926c32ad)](https://www.codacy.com/gh/estuaryoss/estuary-agent-java?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=estuaryoss/estuary-agent-java&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/5600efff46a8f385a221/maintainability)](https://codeclimate.com/github/estuaryoss/estuary-agent-java/maintainability)
 
+## Postman collection
+[API collection](https://documenter.getpostman.com/view/2360061/SVYrrdGe)  
+For /commanddetached endpoint **start.py** binary is needed. Please download the zip compiled for all platforms from [here](https://estuary-agent.s3.eu-central-1.amazonaws.com/4.0.8/start.zip).  
+Place one platform-specific binary under the same folder from where the service is started and rename it in **start.py**.  
+  
+
 ## Eureka client registration
 Set the following env vars:  
 -   APP_IP -> the ip which this service binds to
