@@ -2,12 +2,8 @@
 
 Support project: <a href="https://paypal.me/catalindinuta?locale.x=en_US"><img src="https://lh3.googleusercontent.com/Y2_nyEd0zJftXnlhQrWoweEvAy4RzbpDah_65JGQDKo9zCcBxHVpajYgXWFZcXdKS_o=s180-rw" height="40" width="40" align="center"></a>   
 
-# This project has moved to: https://github.com/estuaryoss/estuary-agent-java
-
 # About
-Agent written in Java (SpringBoot) as part of **estuary** stack. 
-
-The advantage of this implementation is that java libraries can be integrated within, rather than executing the logic through cli commands pointing to a main class in a jar, as per the original python implementation.
+Agent written in Java (SpringBoot) which executes low-level commands. 
 
 ## Artifact
 ![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/com.github.dinuta.estuary/agent/4.0.8)
@@ -50,10 +46,6 @@ There are two ways to inject user defined environment variables.
 -   create an **environment.properties** file with the extra env vars needed and place it in the same path as the JAR. Example in this repo.  
 
 *! All environment variables described above can also be set using **environment.properties**. However, the vars set through **application.yml** can't be set: PORT, APP_IP, EUREKA_SERVER.*
-
-## More information
-This service acts with small differences as the original [python implementation](https://github.com/dinuta/estuary-agent).  
-All the documentation should be matched, minus some differences in terms how this service registers to eureka.
 
 ## Example output
 curl -X POST -d 'ls -lrt' http://localhost:8080/command
