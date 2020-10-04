@@ -22,7 +22,7 @@ jobs: # a collection of steps
             - ~/.m2
           key: estuary-agent-{{ checksum "pom.xml" }}
       - run:
-          command: wget https://github.com/dinuta/estuary-agent/releases/download/4.0.8/start.py-linux
+          command: wget https://estuary-agent.s3.eu-central-1.amazonaws.com/4.0.8/start.py-linux
           name: "download start.py"
       - run:
           command: mv start.py-linux start.py

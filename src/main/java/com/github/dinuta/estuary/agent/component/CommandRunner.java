@@ -283,7 +283,7 @@ public class CommandRunner {
 
         return new ProcessExecutor()
                 .command(command)
-                .environment(environment.getVirtualEnvironment())
+                .environment(environment.getEnvironmentAndVirtualEnvironment())
                 .destroyOnExit()
                 .readOutput(true);
     }
@@ -304,7 +304,7 @@ public class CommandRunner {
 
         StartedProcess startedProcess = new ProcessExecutor()
                 .command(command)
-                .environment(environment.getVirtualEnvironment())
+                .environment(environment.getEnvironmentAndVirtualEnvironment())
                 .destroyOnExit()
                 .readOutput(true)
                 .redirectError(outputStream)
