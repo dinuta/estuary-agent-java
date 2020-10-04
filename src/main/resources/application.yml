@@ -1,0 +1,31 @@
+server:
+  port: ${PORT:8080}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8080/eureka/v2}
+    instance:
+    preferIpAddress: true
+    enabled: false
+    healthcheck:
+      enabled: true
+  instance:
+    hostname: ${APP_IP:0.0.0.0}
+    statusPageUrl: http://${eureka.hostname}:${PORT:8080}/actuator/info
+    healthCheckUrl: http://${eureka.hostname}:${PORT:8080}/actuator/health
+    homePageUrl: http://${eureka.hostname}:${PORT:8080}/
+
+
+spring:
+  application:
+    name: estuary-agent-java
+
+management:
+  endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true
+    heapdump:
+      enabled: true

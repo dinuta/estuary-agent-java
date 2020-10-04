@@ -1,0 +1,54 @@
+version: 2 # use CircleCI 2.0
+jobs: # a collection of steps
+  build: # runs not using Workflows must have a `build` job as entry point
+
+    working_directory: ~/estuary-agent # directory where steps will run
+
+    docker: # run the steps with Docker
+      - image: circleci/openjdk:11-jdk-stretch # ...with this image as the primary container; this is where all `steps` will run
+
+    steps: # a collection of executable commands
+
+      - checkout # check out source code to working directory
+
+      - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
+          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          key: estuary-agent-{{ checksum "pom.xml" }}
+
+      - run: mvn dependency:go-offline # gets the project dependencies
+
+      - save_cache: # saves the project dependencies
+          paths:
+            - ~/.m2
+          key: estuary-agent-{{ checksum "pom.xml" }}
+      - run:
+          command: wget https://github.com/dinuta/estuary-agent/releases/download/4.0.8/start.py-linux
+          name: "download start.py"
+      - run:
+          command: mv start.py-linux start.py
+          name: "rename start.py-linux"
+      - run:
+          command: chmod +x start.py
+          name: "chmod +x start.py"
+
+      - run:
+          command: mvn clean package # run the actual tests
+          environment:
+            COMMAND_TIMEOUT: 3
+          name: "clean package"
+      - run:
+          command: sudo apt-get update
+          name: "apt-get update"
+      - run:
+          command: sudo apt-get install gnupg2
+          name: "install gnupg2"
+      #      - run:
+      #          command: export GPG_KEYNAME=$(gpg2 --list-keys | head -4 | tail -1 |  sed 's/^\s+//g') && mvn -s settings.xml clean deploy -DskipTests=true
+      #          name: "deploy"
+
+      # -> for new gpg2 key: export GNUPGHOME="$(mktemp -d)" && export GPG_TTY=$(tty) && gpg --batch --generate-key .circleci/gpgtemplate &&
+
+      - store_artifacts: # store the jar as an artifact
+          # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
+          path: target/agent-4.0.9-SNAPSHOT-exec.jar
+      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
