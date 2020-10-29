@@ -99,7 +99,7 @@ public class FolderApiControllerTest {
 
         ApiResponse body = responseEntity.getBody();
 
-        assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.NOT_FOUND.value());
+        assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
         assertThat(body.getCode()).isEqualTo(ApiResponseConstants.FOLDER_ZIP_FAILURE);
         assertThat(body.getMessage()).isEqualTo(
                 String.format(String.format(ApiResponseMessage.getMessage(ApiResponseConstants.FOLDER_ZIP_FAILURE), folderName)));
