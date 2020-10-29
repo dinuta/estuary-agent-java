@@ -41,7 +41,7 @@ public class TestAgentSpringBoot implements CommandLineRunner {
         if (arg0.length > 0 && arg0[0].equals("exitcode")) {
             throw new ExitException();
         }
-        fluentdService.emit(FluentdServiceConstants.STARTUP, MessageDumper.dumpMessage(environment.getEnvironmentAndVirtualEnvironment().toString()));
+        fluentdService.emit(FluentdServiceConstants.STARTUP, MessageDumper.dumpMessage(environment.getEnvAndVirtualEnv().toString()));
     }
 
     class ExitException extends RuntimeException implements ExitCodeGenerator {

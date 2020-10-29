@@ -26,6 +26,7 @@ import org.zeroturnaround.zip.ZipUtil;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 
 @Api(tags = {"estuary-agent"})
@@ -65,12 +66,9 @@ public class FolderApiController implements FolderApi {
         }
 
         File file;
-        ByteArrayResource resource;
         try {
             file = new File(archiveNamePath);
             ZipUtil.pack(new File(folderPath), file, name -> name);
-
-            resource = new ByteArrayResource(IOUtils.toByteArray(new FileInputStream(archiveNamePath)));
         } catch (Exception e) {
             return new ResponseEntity<>(new ApiResponse()
                     .code(ApiResponseConstants.FOLDER_ZIP_FAILURE)
@@ -79,7 +77,21 @@ public class FolderApiController implements FolderApi {
                     .name(About.getAppName())
                     .version(About.getVersion())
                     .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
-                    .path(clientRequest.getRequestUri()), HttpStatus.NOT_FOUND);
+                    .path(clientRequest.getRequestUri()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        ByteArrayResource resource;
+        try (InputStream inputStream = new FileInputStream(archiveNamePath)) {
+            resource = new ByteArrayResource(IOUtils.toByteArray(inputStream));
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiResponse()
+                    .code(ApiResponseConstants.FOLDER_ZIP_FAILURE)
+                    .message(String.format(ApiResponseMessage.getMessage(ApiResponseConstants.FOLDER_ZIP_FAILURE), folderPath))
+                    .description(ExceptionUtils.getStackTrace(e))
+                    .name(About.getAppName())
+                    .version(About.getVersion())
+                    .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
+                    .path(clientRequest.getRequestUri()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return ResponseEntity.ok()

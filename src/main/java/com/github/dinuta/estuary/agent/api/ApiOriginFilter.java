@@ -49,7 +49,7 @@ public class ApiOriginFilter extends GenericFilterBean {
         log.debug(HeaderConstants.X_REQUEST_ID + " : " + xRequestId);
 
         if (!(String.valueOf(tokenHeader)
-                .equals(String.valueOf(environment.getEnvironmentAndVirtualEnvironment().get(HTTP_AUTH_TOKEN))))) {
+                .equals(String.valueOf(environment.getEnvAndVirtualEnv().get(HTTP_AUTH_TOKEN))))) {
             httpResponse.sendError(HttpStatus.UNAUTHORIZED.value());
             return;
         }

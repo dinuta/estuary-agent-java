@@ -53,7 +53,7 @@ public class EnvApiController implements EnvApi {
         return new ResponseEntity<>(new ApiResponse()
                 .code(ApiResponseConstants.SUCCESS)
                 .message(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS))
-                .description(environment.getEnvironmentAndVirtualEnvironment().get(envName))
+                .description(environment.getEnvAndVirtualEnv().get(envName))
                 .name(About.getAppName())
                 .version(About.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
@@ -66,7 +66,7 @@ public class EnvApiController implements EnvApi {
         return new ResponseEntity<>(new ApiResponse()
                 .code(ApiResponseConstants.SUCCESS)
                 .message(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS))
-                .description(environment.getEnvironmentAndVirtualEnvironment())
+                .description(environment.getEnvAndVirtualEnv())
                 .name(About.getAppName())
                 .version(About.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
@@ -79,7 +79,7 @@ public class EnvApiController implements EnvApi {
 
         try {
             envVarsToBeAdded = objectMapper.readValue(envVars, LinkedHashMap.class);
-            environment.setExternalEnvVars(envVarsToBeAdded);
+            virtualEnvVarsAdded = environment.setExternalEnvVars(envVarsToBeAdded);
         } catch (Exception e) {
             log.debug(ExceptionUtils.getStackTrace(e));
             return new ResponseEntity<>(new ApiResponse()
@@ -92,10 +92,6 @@ public class EnvApiController implements EnvApi {
                     .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
                     .path(clientRequest.getRequestUri()), HttpStatus.NOT_FOUND);
         }
-
-        envVarsToBeAdded.forEach((key, value) -> {
-            if (environment.getVirtualEnvironment().containsKey(key)) virtualEnvVarsAdded.put(key, value);
-        });
 
         return new ResponseEntity<>(new ApiResponse()
                 .code(ApiResponseConstants.SUCCESS)

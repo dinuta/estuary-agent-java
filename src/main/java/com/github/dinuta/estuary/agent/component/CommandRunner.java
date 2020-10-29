@@ -221,8 +221,8 @@ public class CommandRunner {
     public CommandDetails getCmdDetailsOfProcess(String[] command, ProcessState processState) {
         CommandDetails commandDetails = new CommandDetails();
         InputStream inputStream = null;
-        int timeout = environment.getEnvironmentAndVirtualEnvironment().get(COMMAND_TIMEOUT) != null ?
-                Integer.parseInt(environment.getEnvironmentAndVirtualEnvironment().get(COMMAND_TIMEOUT)) : COMMAND_TIMEOUT_DEFAULT;
+        int timeout = environment.getEnvAndVirtualEnv().get(COMMAND_TIMEOUT) != null ?
+                Integer.parseInt(environment.getEnvAndVirtualEnv().get(COMMAND_TIMEOUT)) : COMMAND_TIMEOUT_DEFAULT;
 
         try {
             ProcessResult processResult = processState.getProcessResult().get(timeout, TimeUnit.SECONDS);
@@ -283,7 +283,7 @@ public class CommandRunner {
 
         return new ProcessExecutor()
                 .command(command)
-                .environment(environment.getEnvironmentAndVirtualEnvironment())
+                .environment(environment.getEnvAndVirtualEnv())
                 .destroyOnExit()
                 .readOutput(true);
     }
@@ -304,7 +304,7 @@ public class CommandRunner {
 
         StartedProcess startedProcess = new ProcessExecutor()
                 .command(command)
-                .environment(environment.getEnvironmentAndVirtualEnvironment())
+                .environment(environment.getEnvAndVirtualEnv())
                 .destroyOnExit()
                 .readOutput(true)
                 .redirectError(outputStream)
