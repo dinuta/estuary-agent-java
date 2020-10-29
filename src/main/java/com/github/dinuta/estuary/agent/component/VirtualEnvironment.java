@@ -50,11 +50,26 @@ public class VirtualEnvironment {
             virtualEnvironment.put(key, value);
     }
 
-    public void setExternalEnvVars(Map<String, String> envVars) {
-        envVars.forEach((key, value) -> {
-            if (!environment.containsKey(key) && virtualEnvironment.size() <= VIRTUAL_ENVIRONMENT_MAX_SIZE)
+    public Map<String, String> setExternalEnvVars(Map<String, String> envVars) {
+        Map<String, String> addedEnvVars = new LinkedHashMap<>();
+
+        for (Map.Entry<String, String> entry : envVars.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            if (environment.containsKey(key)) continue;
+
+            if (virtualEnvironment.containsKey(key)) {
+                virtualEnvironment.put(key, value); //can override
+                addedEnvVars.put(key, value);
+                continue;
+            }
+            if (virtualEnvironment.size() <= VIRTUAL_ENVIRONMENT_MAX_SIZE) {
                 virtualEnvironment.put(key, value);
-        });
+                addedEnvVars.put(key, value);
+            }
+
+        }
+        return addedEnvVars;
     }
 
     /**
@@ -62,7 +77,7 @@ public class VirtualEnvironment {
      *
      * @return Map containing initial immutable env vars plus virtual env vars set by the user
      */
-    public Map<String, String> getEnvironmentAndVirtualEnvironment() {
+    public Map<String, String> getEnvAndVirtualEnv() {
         Map<String, String> systemAndExternalEnvVars = new LinkedHashMap<>();
         systemAndExternalEnvVars.putAll(environment);
 
@@ -78,7 +93,7 @@ public class VirtualEnvironment {
      *
      * @return Map containing initial immutable env vars
      */
-    public Map<String, String> getEnvironment() {
+    public Map<String, String> getEnv() {
         return environment;
     }
 
@@ -87,7 +102,7 @@ public class VirtualEnvironment {
      *
      * @return Map containing mutable env vars set by the user
      */
-    public Map<String, String> getVirtualEnvironment() {
+    public Map<String, String> getVirtualEnv() {
         return virtualEnvironment;
     }
 }

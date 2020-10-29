@@ -9,12 +9,13 @@ import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,9 +23,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -63,10 +62,9 @@ public class FileApiController implements FileApi {
                     .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
                     .path(clientRequest.getRequestUri()), HttpStatus.NOT_FOUND);
         }
-
-        try {
-            Path path = Paths.get(filePath);
-            fileContent = Files.readAllLines(path);
+        ByteArrayResource resource;
+        try (InputStream inputStream = new FileInputStream(new File(filePath))) {
+            resource = new ByteArrayResource(IOUtils.toByteArray(inputStream));
         } catch (Exception e) {
             return new ResponseEntity<>(new ApiResponse()
                     .code(ApiResponseConstants.GET_FILE_FAILURE)
@@ -79,8 +77,7 @@ public class FileApiController implements FileApi {
         }
 
         return ResponseEntity.ok()
-                .contentType(MediaType.valueOf("text/plain"))
-                .body(String.join("\n", fileContent));
+                .body(resource);
     }
 
     public ResponseEntity<ApiResponse> filePut(@ApiParam(value = "The content of the file", required = true) @Valid @RequestBody byte[] content, @ApiParam(value = "", required = true) @RequestHeader(value = "File-Path", required = false) String filePath, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
@@ -110,9 +107,8 @@ public class FileApiController implements FileApi {
                     .path(clientRequest.getRequestUri()), HttpStatus.NOT_FOUND);
         }
 
-        try {
-            Path path = Paths.get(filePath);
-            Files.write(path, content);
+        try (OutputStream outputStream = new FileOutputStream(new File(filePath))) {
+            org.apache.commons.io.IOUtils.write(content, outputStream);
         } catch (Exception e) {
             return new ResponseEntity<>(new ApiResponse()
                     .code(ApiResponseConstants.UPLOAD_FILE_FAILURE)

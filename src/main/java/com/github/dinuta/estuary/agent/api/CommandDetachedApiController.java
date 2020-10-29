@@ -11,6 +11,7 @@ import com.github.dinuta.estuary.agent.model.api.ApiResponse;
 import com.github.dinuta.estuary.agent.model.api.CommandDescription;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +25,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,8 +77,19 @@ public class CommandDetachedApiController implements CommandDetachedApi {
         try {
             if (!testInfo.exists())
                 writeContentInFile(testInfo, commandDescription);
-            Path path = Paths.get(testInfoFilename);
-            String fileContent = String.join("\n", Files.readAllLines(path));
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiResponse()
+                    .code(ApiResponseConstants.GET_TEST_INFO_FAILURE)
+                    .message(ApiResponseMessage.getMessage(ApiResponseConstants.GET_TEST_INFO_FAILURE))
+                    .description(ExceptionUtils.getStackTrace(e))
+                    .name(About.getAppName())
+                    .version(About.getVersion())
+                    .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
+                    .path(clientRequest.getRequestUri()), HttpStatus.OK);
+        }
+
+        try (InputStream inputStream = new FileInputStream(testInfo)) {
+            String fileContent = IOUtils.toString(inputStream, "UTF-8");
             commandDescription = objectMapper.readValue(fileContent, CommandDescription.class);
         } catch (Exception e) {
             return new ResponseEntity<>(new ApiResponse()
