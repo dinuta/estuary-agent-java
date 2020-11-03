@@ -163,7 +163,7 @@ public class CommandDetachedApiController implements CommandDetachedApi {
                 .name(About.getAppName())
                 .version(About.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
-                .path(clientRequest.getRequestUri()), HttpStatus.OK);
+                .path(clientRequest.getRequestUri()), HttpStatus.ACCEPTED);
     }
 
     private void writeContentInFile(File testInfo, CommandDescription commandDescription) throws IOException {
