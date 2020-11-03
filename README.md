@@ -1,12 +1,41 @@
 <h1 align="center"><img src="./docs/images/banner_agent.png" alt="Estuary Agent"></h1>  
 
-Support project: <a href="https://paypal.me/catalindinuta?locale.x=en_US"><img src="https://lh3.googleusercontent.com/Y2_nyEd0zJftXnlhQrWoweEvAy4RzbpDah_65JGQDKo9zCcBxHVpajYgXWFZcXdKS_o=s180-rw" height="40" width="40" align="center"></a>   
+The agent is written in Java (SpringBoot) and it executes low-level commands. 
 
-# About
-Agent written in Java (SpringBoot) which executes low-level commands. 
+It enables any use case which implies system commands:  
+-   controlling and configuring the machines (via REST API)
+-   exposing CLI applications via REST API
+-   testing support by enabling SUT control and automation framework control
+-   IoT 
+-   Home control integrations
+
+
+It supports command execution having several modes:
+-   commands executed sequentially
+-   commands executed in parallel
+-   commands executed in background
+-   commands executed synchronously 
+
+This code acts both as a microservice as well as a library:
+
+a) Standalone microservice jar with the extension: [exec.jar](https://search.maven.org/artifact/com.github.dinuta.estuary/agent/4.0.9/jar)  
+```bash
+java -jar agent-4.0.9-exec.jar
+```
+b) Library as a Maven dependency:
+```xml
+<dependency>
+    <groupId>com.github.dinuta.estuary</groupId>
+    <artifactId>agent</artifactId>
+    <version>4.0.9</version>
+</dependency>
+```
+
+Integration of the library in a new custom microservice is shown [in wiki](https://github.com/dinuta/estuary-agent-java/wiki)
+
 
 ## Artifact
-![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/com.github.dinuta.estuary/agent/4.0.8)
+![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/com.github.dinuta.estuary/agent/4.0.9)
 ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/com.github.dinuta.estuary/agent?server=https%3A%2F%2Foss.sonatype.org)
 
 ## Build status
@@ -112,7 +141,7 @@ Get this dependency:
 <dependency>
     <groupId>com.github.dinuta.estuary</groupId>
     <artifactId>agent</artifactId>
-    <version>4.0.8</version>
+    <version>4.0.9</version>
 </dependency>
 ```
 ## Maven devendency snapshot
@@ -120,7 +149,7 @@ Get this dependency:
 <dependency>
     <groupId>com.github.dinuta.estuary</groupId>
     <artifactId>agent</artifactId>
-    <version>4.0.8-SNAPSHOT</version>
+    <version>4.1.0-SNAPSHOT</version>
 </dependency>
 ```
 For using a snapshot version, set the oss.sonatype.org repo in settings.xml:
@@ -138,3 +167,5 @@ For using a snapshot version, set the oss.sonatype.org repo in settings.xml:
     <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
 </repository>
 ```
+
+Support project: <a href="https://paypal.me/catalindinuta?locale.x=en_US"><img src="https://lh3.googleusercontent.com/Y2_nyEd0zJftXnlhQrWoweEvAy4RzbpDah_65JGQDKo9zCcBxHVpajYgXWFZcXdKS_o=s180-rw" height="40" width="40" align="center"></a>   
