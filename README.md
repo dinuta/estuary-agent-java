@@ -16,6 +16,10 @@ It supports command execution having several modes:
 -   commands executed in background
 -   commands executed synchronously 
 
+With the help of the agent the user can also do IO operations:
+-   file upload and download (binary / text)
+-   folder download (as zip archive)
+
 This code acts both as a microservice as well as a library:
 
 a) Standalone microservice jar with the extension: [exec.jar](https://search.maven.org/artifact/com.github.dinuta.estuary/agent/4.0.9/jar)  
