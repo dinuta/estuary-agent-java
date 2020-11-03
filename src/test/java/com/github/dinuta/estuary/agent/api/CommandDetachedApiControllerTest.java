@@ -59,7 +59,7 @@ public class CommandDetachedApiControllerTest {
         ResponseEntity<ApiResponse> responseEntity = postApiResponseCommandDescriptionResponseEntity(commandInfo.split(";")[0], id);
         ApiResponse body = responseEntity.getBody();
 
-        assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
+        assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(body.getCode()).isEqualTo(ApiResponseConstants.SUCCESS);
         assertThat(body.getMessage()).isEqualTo(
                 String.format(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS)));
@@ -97,7 +97,7 @@ public class CommandDetachedApiControllerTest {
 
         ApiResponse body = responseEntity.getBody();
 
-        assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
+        assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(body.getCode()).isEqualTo(ApiResponseConstants.SUCCESS);
         assertThat(body.getMessage()).isEqualTo(
                 String.format(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS)));
