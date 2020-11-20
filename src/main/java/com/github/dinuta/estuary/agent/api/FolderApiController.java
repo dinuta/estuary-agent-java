@@ -56,10 +56,9 @@ public class FolderApiController implements FolderApi {
         }
 
         File file = new File(archiveNamePath);
-        ZipUtil.pack(new File(folderPath), file, name -> name);
-
         ByteArrayResource resource;
         try (InputStream inputStream = new FileInputStream(archiveNamePath)) {
+            ZipUtil.pack(new File(folderPath), file, name -> name);
             resource = new ByteArrayResource(IOUtils.toByteArray(inputStream));
         } catch (IOException e) {
             throw new ApiException(ApiResponseCode.FOLDER_ZIP_FAILURE.code,
