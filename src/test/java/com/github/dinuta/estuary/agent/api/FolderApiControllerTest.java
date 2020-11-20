@@ -72,7 +72,7 @@ public class FolderApiControllerTest {
 
         ApiResponse body = responseEntity.getBody();
 
-        assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.NOT_FOUND.value());
+        assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
         assertThat(body.getCode()).isEqualTo(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code);
         assertThat(body.getMessage()).isEqualTo(
                 String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code), HeaderConstants.FOLDER_PATH));

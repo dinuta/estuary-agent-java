@@ -80,7 +80,7 @@ public class FileApiController implements FileApi {
                     .name(About.getAppName())
                     .version(About.getVersion())
                     .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
-                    .path(clientRequest.getRequestUri()), HttpStatus.NOT_FOUND);
+                    .path(clientRequest.getRequestUri()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if (content == null) {
