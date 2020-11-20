@@ -1,16 +1,17 @@
 package com.github.dinuta.estuary.agent.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dinuta.estuary.agent.component.ClientRequest;
 import com.github.dinuta.estuary.agent.component.VirtualEnvironment;
 import com.github.dinuta.estuary.agent.constants.About;
-import com.github.dinuta.estuary.agent.constants.ApiResponseConstants;
+import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
+import com.github.dinuta.estuary.agent.exception.ApiException;
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +52,8 @@ public class EnvApiController implements EnvApi {
         String accept = request.getHeader("Accept");
 
         return new ResponseEntity<>(new ApiResponse()
-                .code(ApiResponseConstants.SUCCESS)
-                .message(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS))
+                .code(ApiResponseCode.SUCCESS.code)
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
                 .description(environment.getEnvAndVirtualEnv().get(envName))
                 .name(About.getAppName())
                 .version(About.getVersion())
@@ -64,8 +65,8 @@ public class EnvApiController implements EnvApi {
         String accept = request.getHeader("Accept");
 
         return new ResponseEntity<>(new ApiResponse()
-                .code(ApiResponseConstants.SUCCESS)
-                .message(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS))
+                .code(ApiResponseCode.SUCCESS.code)
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
                 .description(environment.getEnvAndVirtualEnv())
                 .name(About.getAppName())
                 .version(About.getVersion())
@@ -73,29 +74,22 @@ public class EnvApiController implements EnvApi {
                 .path(clientRequest.getRequestUri()), HttpStatus.OK);
     }
 
+
     public ResponseEntity<ApiResponse> envPost(@ApiParam(value = "List of env vars by key-value pair in JSON format", required = true) @Valid @RequestBody String envVars, @ApiParam(value = "Authentication Token") @RequestHeader(value = "Token", required = false) String token) {
-        Map<String, String> envVarsToBeAdded = new LinkedHashMap<>();
-        Map<String, String> virtualEnvVarsAdded = new LinkedHashMap<>();
+        Map<String, String> envVarsToBeAdded;
+        Map<String, String> virtualEnvVarsAdded;
 
         try {
             envVarsToBeAdded = objectMapper.readValue(envVars, LinkedHashMap.class);
             virtualEnvVarsAdded = environment.setExternalEnvVars(envVarsToBeAdded);
-        } catch (Exception e) {
-            log.debug(ExceptionUtils.getStackTrace(e));
-            return new ResponseEntity<>(new ApiResponse()
-                    .code(ApiResponseConstants.SET_ENV_VAR_FAILURE)
-                    .message(String.format(
-                            ApiResponseMessage.getMessage(ApiResponseConstants.SET_ENV_VAR_FAILURE), envVars))
-                    .description(ExceptionUtils.getStackTrace(e))
-                    .name(About.getAppName())
-                    .version(About.getVersion())
-                    .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
-                    .path(clientRequest.getRequestUri()), HttpStatus.NOT_FOUND);
+        } catch (JsonProcessingException e) {
+            throw new ApiException(ApiResponseCode.SET_ENV_VAR_FAILURE.code,
+                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.SET_ENV_VAR_FAILURE.code), envVars));
         }
 
         return new ResponseEntity<>(new ApiResponse()
-                .code(ApiResponseConstants.SUCCESS)
-                .message(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS))
+                .code(ApiResponseCode.SUCCESS.code)
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
                 .description(virtualEnvVarsAdded)
                 .name(About.getAppName())
                 .version(About.getVersion())

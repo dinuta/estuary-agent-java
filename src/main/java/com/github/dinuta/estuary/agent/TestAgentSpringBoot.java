@@ -23,7 +23,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
         "com.github.dinuta.estuary.agent.api",
         "com.github.dinuta.estuary.agent.config",
         "com.github.dinuta.estuary.agent.configuration",
-        "com.github.dinuta.estuary.agent.component"
+        "com.github.dinuta.estuary.agent.component",
+        "com.github.dinuta.estuary.agent.handler"
 })
 public class TestAgentSpringBoot implements CommandLineRunner {
     @Autowired

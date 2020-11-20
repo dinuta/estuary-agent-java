@@ -3,7 +3,7 @@ package com.github.dinuta.estuary.agent.api;
 import com.github.dinuta.estuary.agent.api.constants.HeaderConstants;
 import com.github.dinuta.estuary.agent.api.utils.HttpRequestUtils;
 import com.github.dinuta.estuary.agent.constants.About;
-import com.github.dinuta.estuary.agent.constants.ApiResponseConstants;
+import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
 import org.junit.jupiter.api.Test;
@@ -55,8 +55,8 @@ public class XRequestIdTest {
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
         assertThat(responseEntity.getHeaders().get(HeaderConstants.X_REQUEST_ID).get(0)).isEqualTo(xReqId); // <--
-        assertThat(body.getCode()).isEqualTo(ApiResponseConstants.SUCCESS);
-        assertThat(body.getMessage()).isEqualTo(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS));
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
+        assertThat(body.getMessage()).isEqualTo(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code));
         assertThat(body.getDescription()).isEqualTo(About.getAppName());
         assertThat(body.getName()).isEqualTo(About.getAppName());
         assertThat(body.getVersion()).isEqualTo(About.getVersion());
@@ -79,8 +79,8 @@ public class XRequestIdTest {
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
         assertThat(responseEntity.getHeaders().get(HeaderConstants.X_REQUEST_ID).get(0)).isInstanceOf(String.class); // <--
         assertThat(responseEntity.getHeaders().get(HeaderConstants.X_REQUEST_ID).get(0).length()).isEqualTo(36); // <--
-        assertThat(body.getCode()).isEqualTo(ApiResponseConstants.SUCCESS);
-        assertThat(body.getMessage()).isEqualTo(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS));
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
+        assertThat(body.getMessage()).isEqualTo(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code));
         assertThat(body.getDescription()).isEqualTo(About.getAppName());
         assertThat(body.getName()).isEqualTo(About.getAppName());
         assertThat(body.getVersion()).isEqualTo(About.getVersion());

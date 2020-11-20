@@ -2,7 +2,7 @@ package com.github.dinuta.estuary.agent.api;
 
 import com.github.dinuta.estuary.agent.api.utils.HttpRequestUtils;
 import com.github.dinuta.estuary.agent.constants.About;
-import com.github.dinuta.estuary.agent.constants.ApiResponseConstants;
+import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
 import com.github.dinuta.estuary.agent.model.api.ApiResponseCommandDescription;
@@ -55,9 +55,9 @@ public class CommandApiControllerTest {
         ApiResponseCommandDescription body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseConstants.SUCCESS);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
 
         this.assertSuccessCommandDescriptionFields(commandInfo, body.getDescription());
 
@@ -77,9 +77,9 @@ public class CommandApiControllerTest {
         ApiResponseCommandDescription body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseConstants.SUCCESS);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
         assertThat(Math.round(body.getDescription().getDuration())).isEqualTo(Math.round(timeout));
         assertThat(body.getDescription().getDuration()).isInstanceOf(Float.class);
 
@@ -108,9 +108,9 @@ public class CommandApiControllerTest {
         ApiResponseCommandDescription body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseConstants.SUCCESS);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
         assertThat(Math.round(body.getDescription().getDuration())).isEqualTo(Math.round(sleep1 + timeout));
         assertThat(body.getDescription().getDuration()).isInstanceOf(Float.class);
 
@@ -142,9 +142,9 @@ public class CommandApiControllerTest {
         ApiResponseCommandDescription body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseConstants.SUCCESS);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
         assertThat(Math.round(body.getDescription().getDuration())).isEqualTo(Math.round(sleep1 + sleep2));
         assertThat(body.getDescription().getDuration()).isInstanceOf(Float.class);
 
@@ -168,9 +168,9 @@ public class CommandApiControllerTest {
         ApiResponseCommandDescription body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseConstants.SUCCESS);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
         assertThat(body.getDescription().getDuration()).isInstanceOf(Float.class);
 
         assertThat(body.getDescription().getCommands().get(command1).getDetails().getCode()).isEqualTo(0L);
@@ -199,9 +199,9 @@ public class CommandApiControllerTest {
         ApiResponseCommandDescription body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseConstants.SUCCESS);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
 
         this.assertFailureCommandDescriptionFields(commandInfo, body.getDescription());
 

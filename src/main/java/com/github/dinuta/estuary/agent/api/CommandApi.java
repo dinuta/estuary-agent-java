@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
-import java.io.IOException;
 
 @Api(value = "command", description = "the command API")
 @RequestMapping(value = "")
@@ -28,7 +27,7 @@ public interface CommandApi {
             produces = {"application/json"},
             consumes = {"text/plain", "application/json", "application/x-www-form-urlencoded"},
             method = RequestMethod.POST)
-    default ResponseEntity<ApiResponseCommandDescription> commandPost(@ApiParam(value = "Commands to run. E.g. ls -lrt", required = true) @Valid @RequestBody String commands, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) throws IOException {
+    default ResponseEntity<ApiResponseCommandDescription> commandPost(@ApiParam(value = "Commands to run. E.g. ls -lrt", required = true) @Valid @RequestBody String commands, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
