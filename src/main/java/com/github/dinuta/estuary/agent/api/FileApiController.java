@@ -74,14 +74,8 @@ public class FileApiController implements FileApi {
 
         log.debug(headerName + " Header: " + filePath);
         if (filePath == null) {
-            return new ResponseEntity<>(new ApiResponse()
-                    .code(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code)
-                    .message(String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code), headerName))
-                    .description(String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code), headerName))
-                    .name(About.getAppName())
-                    .version(About.getVersion())
-                    .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
-                    .path(clientRequest.getRequestUri()), HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ApiException(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code,
+                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code), headerName));
         }
 
         if (content == null) {

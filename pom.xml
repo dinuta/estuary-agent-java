@@ -48,7 +48,7 @@
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <springfox-version>3.0.0</springfox-version>
+        <springfox-version>2.9.2</springfox-version>
         <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
     </properties>
 
