@@ -3,7 +3,7 @@ package com.github.dinuta.estuary.agent.api;
 import com.github.dinuta.estuary.agent.api.constants.HeaderConstants;
 import com.github.dinuta.estuary.agent.api.utils.HttpRequestUtils;
 import com.github.dinuta.estuary.agent.constants.About;
-import com.github.dinuta.estuary.agent.constants.ApiResponseConstants;
+import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
 import org.junit.jupiter.api.Test;
@@ -73,11 +73,11 @@ public class FolderApiControllerTest {
         ApiResponse body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.NOT_FOUND.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseConstants.HTTP_HEADER_NOT_PROVIDED);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code);
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseConstants.HTTP_HEADER_NOT_PROVIDED), HeaderConstants.FOLDER_PATH));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code), HeaderConstants.FOLDER_PATH));
         assertThat(body.getDescription()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseConstants.HTTP_HEADER_NOT_PROVIDED), HeaderConstants.FOLDER_PATH));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code), HeaderConstants.FOLDER_PATH));
         assertThat(body.getName()).isEqualTo(About.getAppName());
         assertThat(body.getVersion()).isEqualTo(About.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
@@ -100,9 +100,9 @@ public class FolderApiControllerTest {
         ApiResponse body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseConstants.FOLDER_ZIP_FAILURE);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.FOLDER_ZIP_FAILURE.code);
         assertThat(body.getMessage()).isEqualTo(
-                String.format(String.format(ApiResponseMessage.getMessage(ApiResponseConstants.FOLDER_ZIP_FAILURE), folderName)));
+                String.format(String.format(ApiResponseMessage.getMessage(ApiResponseCode.FOLDER_ZIP_FAILURE.code), folderName)));
         assertThat(body.getDescription().toString()).contains("Exception");
         assertThat(body.getName()).isEqualTo(About.getAppName());
         assertThat(body.getPath()).isEqualTo("/folder?");

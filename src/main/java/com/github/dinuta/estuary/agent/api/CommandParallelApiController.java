@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dinuta.estuary.agent.component.ClientRequest;
 import com.github.dinuta.estuary.agent.component.CommandRunner;
 import com.github.dinuta.estuary.agent.constants.About;
-import com.github.dinuta.estuary.agent.constants.ApiResponseConstants;
+import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
 import com.github.dinuta.estuary.agent.model.api.ApiResponseCommandDescription;
@@ -56,8 +56,8 @@ public class CommandParallelApiController implements CommandParallelApi {
 
         log.debug("Executing commands: " + commandsList.toString());
         return new ResponseEntity<>(new ApiResponseCommandDescription()
-                .code(ApiResponseConstants.SUCCESS)
-                .message(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS))
+                .code(ApiResponseCode.SUCCESS.code)
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
                 .description(commandRunner.runCommandsParallel(commandsList.toArray(new String[0])))
                 .name(About.getAppName())
                 .version(About.getVersion())

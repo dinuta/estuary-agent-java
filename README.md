@@ -1,24 +1,23 @@
 <h1 align="center"><img src="./docs/images/banner_agent.png" alt="Estuary Agent"></h1>  
 
-The agent is written in Java (SpringBoot) and it executes low-level commands. 
+The agent is written in Java (SpringBoot), and it executes low-level commands. 
 
 It enables any use case which implies system commands:  
--   controlling and configuring the machines (via REST API)
--   exposing CLI applications via REST API
--   testing support by enabling SUT control and automation framework control
+-   Controlling and configuring the machines (via REST API)
+-   Exposing CLI applications via REST API
+-   Testing support by enabling SUT control and automation framework control
 -   IoT 
 -   Home control integrations
 
-
 It supports command execution having several modes:
--   commands executed sequentially
--   commands executed in parallel
--   commands executed in background
--   commands executed synchronously 
+-   Commands executed sequentially
+-   Commands executed in parallel
+-   Commands executed in background
+-   Commands executed synchronously 
 
 With the help of the agent the user can also do IO operations:
--   file upload and download (binary / text)
--   folder download (as zip archive)
+-   File upload and download (binary / text)
+-   Folder download (as zip archive)
 
 This code acts both as a microservice as well as a library:
 
@@ -26,6 +25,7 @@ a) Standalone microservice jar with the extension: [exec.jar](https://search.mav
 ```bash
 java -jar agent-4.0.9-exec.jar
 ```
+
 b) Library as a Maven dependency:
 ```xml
 <dependency>

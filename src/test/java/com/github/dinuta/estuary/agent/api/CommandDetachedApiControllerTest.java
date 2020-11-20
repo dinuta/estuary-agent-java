@@ -2,7 +2,7 @@ package com.github.dinuta.estuary.agent.api;
 
 import com.github.dinuta.estuary.agent.api.utils.HttpRequestUtils;
 import com.github.dinuta.estuary.agent.constants.About;
-import com.github.dinuta.estuary.agent.constants.ApiResponseConstants;
+import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
@@ -60,9 +60,9 @@ public class CommandDetachedApiControllerTest {
         ApiResponse body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseConstants.SUCCESS);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
         assertThat(body.getName()).isEqualTo(About.getAppName());
         assertThat(body.getDescription()).isEqualTo(id);
         assertThat(body.getVersion()).isEqualTo(About.getVersion());
@@ -98,9 +98,9 @@ public class CommandDetachedApiControllerTest {
         ApiResponse body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseConstants.SUCCESS);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseConstants.SUCCESS)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
         assertThat(body.getDescription()).isEqualTo(testId);
 
 
