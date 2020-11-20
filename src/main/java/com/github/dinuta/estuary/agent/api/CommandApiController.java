@@ -7,6 +7,7 @@ import com.github.dinuta.estuary.agent.constants.About;
 import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
+import com.github.dinuta.estuary.agent.exception.ApiException;
 import com.github.dinuta.estuary.agent.model.api.ApiResponseCommandDescription;
 import com.github.dinuta.estuary.agent.model.api.CommandDescription;
 import io.swagger.annotations.Api;

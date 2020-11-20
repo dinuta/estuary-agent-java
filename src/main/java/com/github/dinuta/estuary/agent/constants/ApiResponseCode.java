@@ -24,6 +24,10 @@ public enum ApiResponseCode {
 
     public final int code;
 
+    public int getCode() {
+        return code;
+    }
+
     private ApiResponseCode(int code) {
         this.code = code;
     }

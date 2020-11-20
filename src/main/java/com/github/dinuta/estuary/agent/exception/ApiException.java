@@ -1,28 +1,14 @@
 package com.github.dinuta.estuary.agent.exception;
 
-import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
-
 public class ApiException extends RuntimeException {
-    private final ApiResponseCode code;
+    private int code;
 
-    private final Object[] params;
-
-    public ApiException(ApiResponseCode code, Throwable cause, Object... params) {
-        super(cause);
+    public ApiException(int code, String msg) {
+        super(msg);
         this.code = code;
-        this.params = params;
     }
 
-    public ApiException(Exception cause) {
-        this(ApiResponseCode.GENERAL, cause);
-    }
-
-    public Object[] getParams() {
-        return params;
-    }
-
-    public ApiResponseCode getCode() {
+    public int getCode() {
         return code;
     }
-
 }
