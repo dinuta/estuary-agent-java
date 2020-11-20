@@ -53,7 +53,7 @@ public class AuthTest {
         ApiResponse body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
         assertThat(body.getMessage()).isEqualTo(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code));
         assertThat(body.getDescription()).isEqualTo(About.getAppName());
         assertThat(body.getName()).isEqualTo(About.getAppName());
