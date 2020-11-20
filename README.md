@@ -46,8 +46,8 @@ Integration of the library in a new custom microservice is shown [in wiki](https
 [![CircleCI](https://circleci.com/gh/dinuta/estuary-agent-java.svg?style=svg&circle-token=2036f4d0e07fadce8101e00e790970fcfb43e03f)](https://circleci.com/gh/dinuta/estuary-agent-java)
 
 ## Code quality
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/20bec8d5bf1b4197b6447b9f926c32ad)](https://www.codacy.com/gh/dinuta/estuary-agent-java?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=estuaryoss/estuary-agent-java&amp;utm_campaign=Badge_Grade)
-[![Maintainability](https://api.codeclimate.com/v1/badges/5600efff46a8f385a221/maintainability)](https://codeclimate.com/github/dinuta/estuary-agent-java/maintainability)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/3a410087fa10428e89e925134c4e3988)](https://www.codacy.com/gh/dinuta/estuary-agent-java/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dinuta/estuary-agent-java&amp;utm_campaign=Badge_Grade)
+[![Maintainability](https://api.codeclimate.com/v1/badges/0f8230850df65ed9840f/maintainability)](https://codeclimate.com/github/dinuta/estuary-agent-java/maintainability)
 
 ## Postman collection
 [API collection](https://documenter.getpostman.com/view/2360061/SVYrrdGe)  
