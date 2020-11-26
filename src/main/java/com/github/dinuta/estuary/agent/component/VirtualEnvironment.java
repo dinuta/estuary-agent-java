@@ -46,7 +46,9 @@ public class VirtualEnvironment {
     }
 
     public boolean setExternalEnvVar(String key, String value) {
-        if (environment.containsKey(key)) {
+        if (environment.containsKey(key)) return false;
+
+        if (virtualEnvironment.containsKey(key)) {
             virtualEnvironment.put(key, value);
             return true;
         }
