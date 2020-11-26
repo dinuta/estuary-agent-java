@@ -1,6 +1,7 @@
 package com.github.dinuta.estuary.agent.api;
 
 import com.github.dinuta.estuary.agent.api.utils.HttpRequestUtils;
+import com.github.dinuta.estuary.agent.component.VirtualEnvironment;
 import com.github.dinuta.estuary.agent.constants.About;
 import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
@@ -246,7 +247,7 @@ public class EnvApiControllerTest {
     @Test
     @Order(9)
     public void whenSettingVirtualEnvVarsThenAHardLimitIsReached() {
-        final int VIRTUAL_ENV_VARS_LIMIT_SIZE = 50;
+        final int VIRTUAL_ENV_VARS_LIMIT_SIZE = VirtualEnvironment.VIRTUAL_ENVIRONMENT_MAX_SIZE;
 
         for (int i = 0; i < 2 * VIRTUAL_ENV_VARS_LIMIT_SIZE; i++) {
             String envVarsJson = String.format("{\"%s\":\"%s\"}", i, i);
