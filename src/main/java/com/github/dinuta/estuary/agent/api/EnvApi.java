@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Api(value = "env", description = "the env API")
+@Api(value = "env")
 @RequestMapping(value = "")
 public interface EnvApi {
 

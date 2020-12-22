@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 
-@Api(value = "command", description = "the command API")
+@Api(value = "command")
 @RequestMapping(value = "")
 public interface CommandApi {
 

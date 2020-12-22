@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@Api(value = "folder", description = "the folder API")
+@Api(value = "folder")
 @RequestMapping(value = "")
 public interface FolderApi {
 

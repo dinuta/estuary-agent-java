@@ -37,7 +37,7 @@ public class HomeControllerTest {
     @Test
     public void whenCallingSwaggerUiThenInformationIsRetrivedOk() {
         ResponseEntity<String> responseEntity = this.restTemplate
-                .getForEntity(SERVER_PREFIX + port + "/swagger-ui.html",
+                .getForEntity(SERVER_PREFIX + port + "/swagger-ui/",
                         String.class);
 
         String body = responseEntity.getBody();
