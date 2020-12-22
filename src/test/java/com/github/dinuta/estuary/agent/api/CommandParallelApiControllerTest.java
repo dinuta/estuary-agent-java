@@ -218,8 +218,8 @@ public class CommandParallelApiControllerTest {
     private void assertCommonCommonDescriptionFields(String command, CommandDescription body) {
         assertThat(LocalDateTime.parse(body.getFinishedat(), DateTimeConstants.PATTERN)).isBefore(LocalDateTime.now());
         assertThat(LocalDateTime.parse(body.getStartedat(), DateTimeConstants.PATTERN)).isBefore(LocalDateTime.now());
-        assertThat(body.getFinished()).isEqualTo(true);
-        assertThat(body.getStarted()).isEqualTo(false);
+        assertThat(body.isFinished()).isEqualTo(true);
+        assertThat(body.isStarted()).isEqualTo(false);
         assertThat(body.getDuration()).isGreaterThanOrEqualTo(0);
         assertThat(body.getPid()).isGreaterThan(0);
         assertThat(body.getId()).isEqualTo("none");

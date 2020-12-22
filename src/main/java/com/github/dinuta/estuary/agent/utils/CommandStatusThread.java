@@ -22,19 +22,21 @@ public class CommandStatusThread implements Runnable {
 
     @Override
     public void run() {
-        pCmd.getCmdsStatus().put(pCmd.getCmd(), pCmd.getCmdStatuses().get(pCmd.getId()).details(
-                commandRunner.getCmdDetailsOfProcess(new String[]{pCmd.getCmd()}, pCmd.getProcessState())));
-        pCmd.getCmdStatuses().get(pCmd.getId()).finishedat(LocalDateTime.now().format(PATTERN));
-        pCmd.getCmdStatuses().get(pCmd.getId()).duration(Duration.between(
+        pCmd.getCmdStatuses().get(pCmd.getId()).setDetails(
+                commandRunner.getCmdDetailsOfProcess(new String[]{pCmd.getCmd()}, pCmd.getProcessState()));
+
+        pCmd.getCmdsStatus().put(pCmd.getCmd(), pCmd.getCmdStatuses().get(pCmd.getId()).getDetails());
+        pCmd.getCmdStatuses().get(pCmd.getId()).setFinishedat(LocalDateTime.now().format(PATTERN));
+        pCmd.getCmdStatuses().get(pCmd.getId()).setDuration(Duration.between(
                 LocalDateTime.parse(pCmd.getCmdStatuses().get(pCmd.getId()).getStartedat(), PATTERN),
                 LocalDateTime.parse(pCmd.getCmdStatuses().get(pCmd.getId()).getFinishedat(), PATTERN)).toMillis() / DENOMINATOR);
-        pCmd.getCmdStatuses().get(pCmd.getId()).status("finished");
-        pCmd.getCmdDescription().commands(pCmd.getCmdsStatus());
-        pCmd.getCmdDescription().finishedat(LocalDateTime.now().format(PATTERN));
-        pCmd.getCmdDescription().duration(Duration.between(
+        pCmd.getCmdStatuses().get(pCmd.getId()).setStatus("finished");
+        pCmd.getCmdDescription().setCommands(pCmd.getCmdsStatus());
+        pCmd.getCmdDescription().setFinishedat(LocalDateTime.now().format(PATTERN));
+        pCmd.getCmdDescription().setDuration(Duration.between(
                 LocalDateTime.parse(pCmd.getCmdDescription().getStartedat(), PATTERN),
                 LocalDateTime.parse(pCmd.getCmdDescription().getFinishedat(), PATTERN)).toMillis() / DENOMINATOR);
-        pCmd.getCmdDescription().finished(true);
-        pCmd.getCmdDescription().started(false);
+        pCmd.getCmdDescription().setFinished(true);
+        pCmd.getCmdDescription().setStarted(false);
     }
 }

@@ -73,7 +73,7 @@ public class CommandDetachedApiController implements CommandDetachedApi {
         log.debug(testInfoName + " Path: " + testInfoFilename);
 
         File testInfo = new File(testInfoFilename);
-        CommandDescription commandDescription = new CommandDescription();
+        CommandDescription commandDescription = CommandDescription.builder().build();
         try {
             if (!testInfo.exists())
                 writeContentInFile(testInfo, commandDescription);
@@ -104,10 +104,11 @@ public class CommandDetachedApiController implements CommandDetachedApi {
         String accept = request.getHeader("Accept");
         String testInfoFilename = new File(".").getAbsolutePath() + "/command_detached_info.json";
         File testInfo = new File(testInfoFilename);
-        CommandDescription commandDescription = new CommandDescription()
+        CommandDescription commandDescription = CommandDescription.builder()
                 .started(true)
                 .finished(false)
-                .id(id);
+                .id(id)
+                .build();
 
         if (commandContent == null) {
             throw new ApiException(ApiResponseCode.EMPTY_REQUEST_BODY_PROVIDED.code,

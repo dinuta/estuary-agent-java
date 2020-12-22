@@ -1,140 +1,39 @@
 package com.github.dinuta.estuary.agent.model.api;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 
+@Builder
 public class CommandDescription {
-    @JsonProperty("finished")
+    @Getter
+    @Setter
     private boolean finished;
-
-    @JsonProperty("started")
+    @Getter
+    @Setter
     private boolean started;
-
-    @JsonProperty("startedat")
+    @Getter
+    @Setter
     private String startedat = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"));
-
-    @JsonProperty("finishedat")
+    @Getter
+    @Setter
     private String finishedat = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"));
-
-    @JsonProperty("duration")
+    @Getter
+    @Setter
     private float duration = 0;
-
-    @JsonProperty("pid")
+    @Getter
+    @Setter
     private long pid = 0;
-
-    @JsonProperty("id")
+    @Getter
+    @Setter
     private String id = "none";
-
-    @JsonProperty("commands")
+    @Getter
+    @Setter
     private LinkedHashMap<String, CommandStatus> commands = new LinkedHashMap<>();
-
-    public boolean getFinished() {
-        return finished;
-    }
-
-    public void setFinished(boolean finished) {
-        this.finished = finished;
-    }
-
-    public boolean getStarted() {
-        return started;
-    }
-
-    public void setStarted(boolean started) {
-        this.started = started;
-    }
-
-    public String getFinishedat() {
-        return finishedat;
-    }
-
-    public void setFinishedat(String finishedat) {
-        this.finishedat = finishedat;
-    }
-
-    public String getStartedat() {
-        return startedat;
-    }
-
-    public void setStartedat(String startedat) {
-        this.startedat = startedat;
-    }
-
-    public float getDuration() {
-        return duration;
-    }
-
-    public void setDuration(float duration) {
-        this.duration = duration;
-    }
-
-    public long getPid() {
-        return pid;
-    }
-
-    public void setPid(long pid) {
-        this.pid = pid;
-    }
-
-    public LinkedHashMap<String, CommandStatus> getCommands() {
-        return commands;
-    }
-
-    public void setCommands(LinkedHashMap<String, CommandStatus> commands) {
-        this.commands = commands;
-    }
-
-
-    public CommandDescription finished(boolean finished) {
-        this.finished = finished;
-        return this;
-    }
-
-    public CommandDescription started(boolean started) {
-        this.started = started;
-        return this;
-    }
-
-    public CommandDescription finishedat(String finishedat) {
-        this.finishedat = finishedat;
-        return this;
-    }
-
-    public CommandDescription startedat(String startedat) {
-        this.startedat = startedat;
-        return this;
-    }
-
-    public CommandDescription duration(float duration) {
-        this.duration = duration;
-        return this;
-    }
-
-    public CommandDescription pid(long pid) {
-        this.pid = pid;
-        return this;
-    }
-
-    public CommandDescription id(String id) {
-        this.id = id;
-        return this;
-    }
-
-    public CommandDescription commands(LinkedHashMap<String, CommandStatus> commands) {
-        this.commands = commands;
-        return this;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     @Override
     public String toString() {
