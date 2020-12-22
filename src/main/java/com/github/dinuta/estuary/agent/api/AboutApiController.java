@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
-@Api(tags = {"estuary-agent"}, description = "estuary-agent swagger API")
+@Api(tags = {"estuary-agent"})
 @Controller
 public class AboutApiController implements AboutApi {
 

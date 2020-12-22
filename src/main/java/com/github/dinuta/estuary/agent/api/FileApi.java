@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 
-@Api(value = "file", description = "the file API")
+@Api(value = "file")
 @RequestMapping(value = "")
 public interface FileApi {
 

@@ -11,13 +11,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import org.springframework.stereotype.Controller;
 
 @SpringBootApplication
 @EnableEurekaClient
-@RestController
-@EnableSwagger2
+@Controller
 @ComponentScan(basePackages = {
         "com.github.dinuta.estuary.agent",
         "com.github.dinuta.estuary.agent.api",

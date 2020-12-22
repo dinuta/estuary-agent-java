@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@Api(value = "ping", description = "the ping API")
+@Api(value = "ping")
 @RequestMapping(value = "")
 public interface PingApi {
 

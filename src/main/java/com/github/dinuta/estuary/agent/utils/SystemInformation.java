@@ -21,7 +21,7 @@ public class SystemInformation {
         } catch (UnknownHostException e) {
             log.info("Could not detect hostname: " + ExceptionUtils.getStackTrace(e));
         }
-        String layer = new File("/.dockerenv").exists() ? "Docker" : "Virtual Machine";
+        String layer = new File("/.dockerenv").exists() ? "Docker" : "Machine";
         long maxMemory = Runtime.getRuntime().maxMemory() / (1024 * 1024 * 1024);
         maxMemory = maxMemory == Long.MAX_VALUE ? Long.MAX_VALUE : maxMemory;
 

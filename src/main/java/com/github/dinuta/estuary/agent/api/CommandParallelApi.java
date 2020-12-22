@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.validation.Valid;
 import java.io.IOException;
 
-@Api(value = "command", description = "the command API")
+@Api(value = "command")
 @RequestMapping(value = "")
 public interface CommandParallelApi {
 

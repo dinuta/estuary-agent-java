@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
-@Api(tags = {"estuary-agent"})
+@Api(tags = {"estuary-agent"}, description = "root")
 @Controller
 public class PingApiController implements PingApi {
 
