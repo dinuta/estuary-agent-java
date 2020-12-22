@@ -1,26 +1,32 @@
 package com.github.dinuta.estuary.agent.model.api;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommandDetails {
 
     @Getter
     @Setter
+    @JsonProperty("out")
     private String out;
     @Getter
     @Setter
+    @JsonProperty("err")
     private String err;
     @Getter
     @Setter
+    @JsonProperty("code")
     private long code;
     @Getter
     @Setter
+    @JsonProperty("pid")
     private long pid;
     @Getter
     @Setter
+    @JsonProperty("args")
     private String[] args;
 
 

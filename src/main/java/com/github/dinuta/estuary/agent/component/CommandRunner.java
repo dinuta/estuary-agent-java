@@ -96,15 +96,15 @@ public class CommandRunner {
 
 
         for (String cmd : commands) {
-            CommandStatus commandStatus = CommandStatus.builder().build();
-            commandStatus.setDetails(this.runCommand(cmd));
+            CommandStatus commandStatus = new CommandStatus();
             commandStatus.setStartedat(LocalDateTime.now().format(DateTimeConstants.PATTERN));
-            commandsStatus.put(cmd, commandStatus.getDetails());
+            commandStatus.setDetails(this.runCommand(cmd));
             commandStatus.setFinishedat(LocalDateTime.now().format(DateTimeConstants.PATTERN));
             commandStatus.setDuration(Duration.between(
                     LocalDateTime.parse(commandStatus.getStartedat(), DateTimeConstants.PATTERN),
                     LocalDateTime.parse(commandStatus.getFinishedat(), DateTimeConstants.PATTERN)).toMillis() / DENOMINATOR);
             commandStatus.setStatus("finished");
+            commandsStatus.put(cmd, commandStatus);
             commandDescription.setCommands(commandsStatus);
         }
 
@@ -186,7 +186,7 @@ public class CommandRunner {
 
 
         for (int i = 0; i < commands.length; i++) {
-            commandStatuses.add(CommandStatus.builder().build());
+            commandStatuses.add(new CommandStatus());
             commandStatuses.get(i).setStartedat(LocalDateTime.now().format(DateTimeConstants.PATTERN));
             processStates.add(this.runCommandDetached(commands[i].split(" ")));
         }

@@ -2,11 +2,11 @@ package com.github.dinuta.estuary.agent.model.api;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommandStatus {
     @JsonProperty("status")
     @Getter

@@ -1,39 +1,48 @@
 package com.github.dinuta.estuary.agent.model.api;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommandDescription {
     @Getter
     @Setter
+    @JsonProperty("finished")
     private boolean finished;
     @Getter
     @Setter
+    @JsonProperty("started")
     private boolean started;
     @Getter
     @Setter
+    @JsonProperty("startedat")
     private String startedat = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"));
     @Getter
     @Setter
+    @JsonProperty("finishedat")
     private String finishedat = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"));
     @Getter
     @Setter
+    @JsonProperty("duration")
     private float duration = 0;
     @Getter
     @Setter
+    @JsonProperty("pid")
     private long pid = 0;
     @Getter
     @Setter
     @Builder.Default
+    @JsonProperty("id")
     private String id = "none";
     @Getter
     @Setter
+    @JsonProperty("commands")
     private LinkedHashMap<String, CommandStatus> commands = new LinkedHashMap<>();
 
     @Override

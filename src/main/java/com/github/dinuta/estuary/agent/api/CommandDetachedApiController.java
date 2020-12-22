@@ -73,7 +73,7 @@ public class CommandDetachedApiController implements CommandDetachedApi {
         log.debug(testInfoName + " Path: " + testInfoFilename);
 
         File testInfo = new File(testInfoFilename);
-        CommandDescription commandDescription = CommandDescription.builder().build();
+        CommandDescription commandDescription = new CommandDescription();
         try {
             if (!testInfo.exists())
                 writeContentInFile(testInfo, commandDescription);
