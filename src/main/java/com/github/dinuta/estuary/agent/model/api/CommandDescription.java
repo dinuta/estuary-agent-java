@@ -30,6 +30,7 @@ public class CommandDescription {
     private long pid = 0;
     @Getter
     @Setter
+    @Builder.Default
     private String id = "none";
     @Getter
     @Setter

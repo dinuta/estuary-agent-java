@@ -96,7 +96,7 @@ public class CommandRunner {
 
 
         for (String cmd : commands) {
-            CommandStatus commandStatus = new CommandStatus();
+            CommandStatus commandStatus = CommandStatus.builder().build();
             commandStatus.setDetails(this.runCommand(cmd));
             commandStatus.setStartedat(LocalDateTime.now().format(DateTimeConstants.PATTERN));
             commandsStatus.put(cmd, commandStatus.getDetails());
@@ -186,7 +186,7 @@ public class CommandRunner {
 
 
         for (int i = 0; i < commands.length; i++) {
-            commandStatuses.add(new CommandStatus());
+            commandStatuses.add(CommandStatus.builder().build());
             commandStatuses.get(i).setStartedat(LocalDateTime.now().format(DateTimeConstants.PATTERN));
             processStates.add(this.runCommandDetached(commands[i].split(" ")));
         }
