@@ -306,7 +306,6 @@ public class CommandRunner {
     }
 
     private ProcessState getProcessState(String[] command) throws IOException {
-        ProcessState processState = new ProcessState();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         StartedProcess startedProcess = new ProcessExecutor()
@@ -317,12 +316,12 @@ public class CommandRunner {
                 .redirectError(outputStream)
                 .start();
 
-        processState.startedProcess(startedProcess);
-        processState.process(startedProcess.getProcess());
-        processState.processResult(startedProcess.getFuture());
-        processState.errOutputStream(outputStream);
-
-        return processState;
+        return ProcessState.builder()
+                .startedProcess(startedProcess)
+                .process(startedProcess.getProcess())
+                .processResult(startedProcess.getFuture())
+                .errOutputStream(outputStream)
+                .build();
     }
 
     private String doQuoteCmd(String s) {

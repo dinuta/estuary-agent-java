@@ -62,12 +62,12 @@ public class CommandApiController implements CommandApi {
         try {
             commandDescription = commandRunner.runCommands(commandsList.toArray(new String[0]));
         } catch (IOException e) {
-            throw new ApiException(ApiResponseCode.COMMAND_EXEC_FAILURE.code,
-                    ApiResponseMessage.getMessage(ApiResponseCode.COMMAND_EXEC_FAILURE.code));
+            throw new ApiException(ApiResponseCode.COMMAND_EXEC_FAILURE.getCode(),
+                    ApiResponseMessage.getMessage(ApiResponseCode.COMMAND_EXEC_FAILURE.getCode()));
         }
         return new ResponseEntity<>(ApiResponseCommandDescription.builder()
-                .code(ApiResponseCode.SUCCESS.code)
-                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
+                .code(ApiResponseCode.SUCCESS.getCode())
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
                 .description(commandDescription)
                 .name(About.getAppName())
                 .version(About.getVersion())

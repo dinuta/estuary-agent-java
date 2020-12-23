@@ -53,15 +53,15 @@ public class FileApiController implements FileApi {
 
         log.debug(headerName + " Header: " + filePath);
         if (filePath == null) {
-            throw new ApiException(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code,
-                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code), headerName));
+            throw new ApiException(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.getCode(),
+                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.getCode()), headerName));
         }
         ByteArrayResource resource;
-        try (InputStream inputStream = new FileInputStream(new File(filePath))) {
+        try (InputStream inputStream = new FileInputStream(filePath)) {
             resource = new ByteArrayResource(IOUtils.toByteArray(inputStream));
         } catch (IOException e) {
-            throw new ApiException(ApiResponseCode.GET_FILE_FAILURE.code,
-                    ApiResponseMessage.getMessage(ApiResponseCode.GET_FILE_FAILURE.code));
+            throw new ApiException(ApiResponseCode.GET_FILE_FAILURE.getCode(),
+                    ApiResponseMessage.getMessage(ApiResponseCode.GET_FILE_FAILURE.getCode()));
         }
 
         return ResponseEntity.ok()
@@ -74,26 +74,26 @@ public class FileApiController implements FileApi {
 
         log.debug(headerName + " Header: " + filePath);
         if (filePath == null) {
-            throw new ApiException(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code,
-                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code), headerName));
+            throw new ApiException(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.getCode(),
+                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.getCode()), headerName));
         }
 
         if (content == null) {
-            throw new ApiException(ApiResponseCode.EMPTY_REQUEST_BODY_PROVIDED.code,
-                    ApiResponseMessage.getMessage(ApiResponseCode.EMPTY_REQUEST_BODY_PROVIDED.code));
+            throw new ApiException(ApiResponseCode.EMPTY_REQUEST_BODY_PROVIDED.getCode(),
+                    ApiResponseMessage.getMessage(ApiResponseCode.EMPTY_REQUEST_BODY_PROVIDED.getCode()));
         }
 
         try (OutputStream outputStream = new FileOutputStream(new File(filePath))) {
             org.apache.commons.io.IOUtils.write(content, outputStream);
         } catch (IOException e) {
-            throw new ApiException(ApiResponseCode.UPLOAD_FILE_FAILURE.code,
-                    ApiResponseMessage.getMessage(ApiResponseCode.UPLOAD_FILE_FAILURE.code));
+            throw new ApiException(ApiResponseCode.UPLOAD_FILE_FAILURE.getCode(),
+                    ApiResponseMessage.getMessage(ApiResponseCode.UPLOAD_FILE_FAILURE.getCode()));
         }
 
         return new ResponseEntity<>(ApiResponse.builder()
-                .code(ApiResponseCode.SUCCESS.code)
-                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
-                .description(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
+                .code(ApiResponseCode.SUCCESS.getCode())
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
+                .description(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
                 .name(About.getAppName())
                 .version(About.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))

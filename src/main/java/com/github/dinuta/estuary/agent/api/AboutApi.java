@@ -17,7 +17,10 @@ public interface AboutApi {
 
     @ApiOperation(value = "Information about the application", nickname = "aboutGet", notes = "", response = ApiResponse.class, tags = {"estuary-agent",})
     @ApiResponses(value = {
-            @io.swagger.annotations.ApiResponse(code = 200, message = "Prints the name and version of the application.", response = ApiResponse.class)})
+            @io.swagger.annotations.ApiResponse(
+                    code = 200,
+                    message = "Prints the name and version of the application.",
+                    response = ApiResponse.class)})
     @RequestMapping(value = "/about",
             produces = {"application/json"},
             method = RequestMethod.GET)

@@ -5,35 +5,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class CommandStatus {
+    @Getter
+    @Setter
     @JsonProperty("status")
+    private String status;
+
     @Getter
     @Setter
-    private String status = null;
-
     @JsonProperty("details")
+    private CommandDetails details;
+
     @Getter
     @Setter
-    private CommandDetails details = null;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     @JsonProperty("startedat")
+    private String startedat;
+
+
     @Getter
     @Setter
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
-    private String startedat = null;
-
     @JsonProperty("finishedat")
-    @Getter
-    @Setter
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
-    private String finishedat = null;
+    private String finishedat;
 
-    @JsonProperty("duration")
     @Getter
     @Setter
-    private float duration = 0;
+    @JsonProperty("duration")
+    private float duration;
 
     @Override
     public String toString() {

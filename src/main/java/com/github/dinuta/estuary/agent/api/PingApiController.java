@@ -42,8 +42,8 @@ public class PingApiController implements PingApi {
     public ResponseEntity<ApiResponse> pingGet(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
         String accept = request.getHeader("Accept");
         return new ResponseEntity<>(ApiResponse.builder()
-                .code(ApiResponseCode.SUCCESS.code)
-                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
+                .code(ApiResponseCode.SUCCESS.getCode())
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
                 .description("pong")
                 .name(About.getAppName())
                 .version(About.getVersion())

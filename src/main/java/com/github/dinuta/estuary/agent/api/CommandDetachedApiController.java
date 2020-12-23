@@ -59,9 +59,9 @@ public class CommandDetachedApiController implements CommandDetachedApi {
     public ResponseEntity<ApiResponse> commandDetachedDelete(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
         String accept = request.getHeader("Accept");
         return new ResponseEntity<>(ApiResponse.builder()
-                .code(ApiResponseCode.NOT_IMPLEMENTED.code)
-                .message(ApiResponseMessage.getMessage(ApiResponseCode.NOT_IMPLEMENTED.code))
-                .description(ApiResponseMessage.getMessage(ApiResponseCode.NOT_IMPLEMENTED.code))
+                .code(ApiResponseCode.NOT_IMPLEMENTED.getCode())
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.NOT_IMPLEMENTED.getCode()))
+                .description(ApiResponseMessage.getMessage(ApiResponseCode.NOT_IMPLEMENTED.getCode()))
                 .name(About.getAppName())
                 .version(About.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
@@ -81,21 +81,21 @@ public class CommandDetachedApiController implements CommandDetachedApi {
             if (!testInfo.exists())
                 writeContentInFile(testInfo, commandDescription);
         } catch (IOException e) {
-            throw new ApiException(ApiResponseCode.GET_TEST_INFO_FAILURE.code,
-                    ApiResponseMessage.getMessage(ApiResponseCode.GET_TEST_INFO_FAILURE.code));
+            throw new ApiException(ApiResponseCode.GET_TEST_INFO_FAILURE.getCode(),
+                    ApiResponseMessage.getMessage(ApiResponseCode.GET_TEST_INFO_FAILURE.getCode()));
         }
 
         try (InputStream inputStream = new FileInputStream(testInfo)) {
             String fileContent = IOUtils.toString(inputStream, "UTF-8");
             commandDescription = objectMapper.readValue(fileContent, CommandDescription.class);
         } catch (IOException e) {
-            throw new ApiException(ApiResponseCode.GET_TEST_INFO_FAILURE.code,
-                    ApiResponseMessage.getMessage(ApiResponseCode.GET_TEST_INFO_FAILURE.code));
+            throw new ApiException(ApiResponseCode.GET_TEST_INFO_FAILURE.getCode(),
+                    ApiResponseMessage.getMessage(ApiResponseCode.GET_TEST_INFO_FAILURE.getCode()));
         }
 
         return new ResponseEntity<>(ApiResponse.builder()
-                .code(ApiResponseCode.SUCCESS.code)
-                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
+                .code(ApiResponseCode.SUCCESS.getCode())
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
                 .description(commandDescription)
                 .name(About.getAppName())
                 .version(About.getVersion())
@@ -116,8 +116,8 @@ public class CommandDetachedApiController implements CommandDetachedApi {
                 .build();
 
         if (commandContent == null) {
-            throw new ApiException(ApiResponseCode.EMPTY_REQUEST_BODY_PROVIDED.code,
-                    ApiResponseMessage.getMessage(ApiResponseCode.EMPTY_REQUEST_BODY_PROVIDED.code));
+            throw new ApiException(ApiResponseCode.EMPTY_REQUEST_BODY_PROVIDED.getCode(),
+                    ApiResponseMessage.getMessage(ApiResponseCode.EMPTY_REQUEST_BODY_PROVIDED.getCode()));
         }
 
         try {
@@ -134,13 +134,13 @@ public class CommandDetachedApiController implements CommandDetachedApi {
             log.debug("Sending args: " + startPyArgumentsList.toString());
             commandRunner.runStartCommandDetached(startPyArgumentsList);
         } catch (IOException e) {
-            throw new ApiException(ApiResponseCode.COMMAND_DETACHED_START_FAILURE.code,
-                    ApiResponseMessage.getMessage(ApiResponseCode.COMMAND_DETACHED_START_FAILURE.code));
+            throw new ApiException(ApiResponseCode.COMMAND_DETACHED_START_FAILURE.getCode(),
+                    ApiResponseMessage.getMessage(ApiResponseCode.COMMAND_DETACHED_START_FAILURE.getCode()));
         }
 
         return new ResponseEntity<>(ApiResponse.builder()
-                .code(ApiResponseCode.SUCCESS.code)
-                .message(String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)))
+                .code(ApiResponseCode.SUCCESS.getCode())
+                .message(String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode())))
                 .description(id)
                 .name(About.getAppName())
                 .version(About.getVersion())
