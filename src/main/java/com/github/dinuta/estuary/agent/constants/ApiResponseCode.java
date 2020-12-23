@@ -22,7 +22,7 @@ public enum ApiResponseCode {
     NOT_IMPLEMENTED(1019),
     GENERAL(1100);
 
-    public final int code;
+    private final int code;
 
     public int getCode() {
         return code;

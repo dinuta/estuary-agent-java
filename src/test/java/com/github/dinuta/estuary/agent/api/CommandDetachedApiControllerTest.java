@@ -60,9 +60,9 @@ public class CommandDetachedApiControllerTest {
         ApiResponse body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode())));
         assertThat(body.getName()).isEqualTo(About.getAppName());
         assertThat(body.getDescription()).isEqualTo(id);
         assertThat(body.getVersion()).isEqualTo(About.getVersion());
@@ -98,9 +98,9 @@ public class CommandDetachedApiControllerTest {
         ApiResponse body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.ACCEPTED.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode())));
         assertThat(body.getDescription()).isEqualTo(testId);
 
 

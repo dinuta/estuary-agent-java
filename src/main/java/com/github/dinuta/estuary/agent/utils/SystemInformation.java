@@ -14,7 +14,6 @@ public class SystemInformation {
     private static final Logger log = LoggerFactory.getLogger(SystemInformation.class);
 
     public static final Map<String, String> getSystemInfo() {
-
         String hostname = "";
         try {
             hostname = InetAddress.getLocalHost().getHostName();
@@ -26,7 +25,7 @@ public class SystemInformation {
         maxMemory = maxMemory == Long.MAX_VALUE ? Long.MAX_VALUE : maxMemory;
 
         Map<String, String> info = new LinkedHashMap<>();
-        info.put("system", getSystem());
+        info.put("system", getOs());
         info.put("platform", "NA");
         info.put("release", "NA");
         info.put("version", System.getProperty("os.version"));
@@ -41,7 +40,7 @@ public class SystemInformation {
         return info;
     }
 
-    private static String getSystem() {
+    private static final String getOs() {
         String PLATFORM_NAME = System.getProperty("os.name").toLowerCase();
         String detectedOs;
         if (PLATFORM_NAME.contains("win")) {

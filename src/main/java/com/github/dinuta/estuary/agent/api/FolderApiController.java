@@ -51,24 +51,24 @@ public class FolderApiController implements FolderApi {
 
         log.debug(headerName + " Header: " + folderPath);
         if (folderPath == null) {
-            throw new ApiException(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code,
-                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code), headerName));
+            throw new ApiException(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.getCode(),
+                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.getCode()), headerName));
         }
 
         File file = new File(archiveNamePath);
         try {
             ZipUtil.pack(new File(folderPath), file, name -> name);
         } catch (Exception e) {
-            throw new ApiException(ApiResponseCode.FOLDER_ZIP_FAILURE.code,
-                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.FOLDER_ZIP_FAILURE.code), folderPath));
+            throw new ApiException(ApiResponseCode.FOLDER_ZIP_FAILURE.getCode(),
+                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.FOLDER_ZIP_FAILURE.getCode()), folderPath));
         }
 
         ByteArrayResource resource;
         try (InputStream inputStream = new FileInputStream(file)) {
             resource = new ByteArrayResource(IOUtils.toByteArray(inputStream));
         } catch (IOException e) {
-            throw new ApiException(ApiResponseCode.FOLDER_ZIP_FAILURE.code,
-                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.FOLDER_ZIP_FAILURE.code), folderPath));
+            throw new ApiException(ApiResponseCode.FOLDER_ZIP_FAILURE.getCode(),
+                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.FOLDER_ZIP_FAILURE.getCode()), folderPath));
         }
 
         return ResponseEntity.ok()

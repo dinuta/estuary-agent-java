@@ -70,10 +70,10 @@ public class FileApiControllerTest {
         ApiResponse body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.getCode());
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code), HeaderConstants.FILE_PATH));
-        assertThat(body.getDescription().toString()).contains(String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.code), HeaderConstants.FILE_PATH));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.getCode()), HeaderConstants.FILE_PATH));
+        assertThat(body.getDescription().toString()).contains(String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.getCode()), HeaderConstants.FILE_PATH));
         assertThat(body.getName()).isEqualTo(About.getAppName());
         assertThat(body.getVersion()).isEqualTo(About.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
@@ -95,9 +95,9 @@ public class FileApiControllerTest {
         ApiResponse body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseCode.GET_FILE_FAILURE.code);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.GET_FILE_FAILURE.getCode());
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseCode.GET_FILE_FAILURE.code)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.GET_FILE_FAILURE.getCode())));
         assertThat(body.getDescription().toString()).contains("Exception");
         assertThat(body.getName()).isEqualTo(About.getAppName());
         assertThat(body.getVersion()).isEqualTo(About.getVersion());
@@ -119,9 +119,9 @@ public class FileApiControllerTest {
         ApiResponse body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseCode.UPLOAD_FILE_FAILURE.code);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.UPLOAD_FILE_FAILURE.getCode());
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseCode.UPLOAD_FILE_FAILURE.code)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.UPLOAD_FILE_FAILURE.getCode())));
         assertThat(body.getDescription().toString()).contains("Exception");
         assertThat(body.getName()).isEqualTo(About.getAppName());
         assertThat(body.getVersion()).isEqualTo(About.getVersion());
@@ -143,11 +143,11 @@ public class FileApiControllerTest {
         ApiResponse body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode())));
         assertThat(body.getDescription()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode())));
         assertThat(body.getName()).isEqualTo(About.getAppName());
         assertThat(body.getPath()).isEqualTo("/file?");
         assertThat(body.getVersion()).isEqualTo(About.getVersion());

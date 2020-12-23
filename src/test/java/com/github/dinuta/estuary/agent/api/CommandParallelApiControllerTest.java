@@ -55,9 +55,9 @@ public class CommandParallelApiControllerTest {
         ApiResponseCommandDescription body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode())));
 
         this.assertSuccessCommandDescriptionFields(commandInfo, body.getDescription());
 
@@ -82,9 +82,9 @@ public class CommandParallelApiControllerTest {
         ApiResponseCommandDescription body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode())));
         assertThat(Math.round(body.getDescription().getDuration())).isEqualTo(Math.round(timeout));
         assertThat(body.getDescription().getDuration()).isInstanceOf(Float.class);
 
@@ -115,9 +115,9 @@ public class CommandParallelApiControllerTest {
         ApiResponseCommandDescription body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode())));
         assertThat(Math.round(body.getDescription().getDuration())).isEqualTo(Math.round(sleep2));
         assertThat(body.getDescription().getDuration()).isInstanceOf(Float.class);
 
@@ -141,9 +141,9 @@ public class CommandParallelApiControllerTest {
         ApiResponseCommandDescription body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode())));
         assertThat(body.getDescription().getDuration()).isInstanceOf(Float.class);
 
         assertThat(body.getDescription().getCommands().get(command1).getDetails().getCode()).isEqualTo(0L);
@@ -172,9 +172,9 @@ public class CommandParallelApiControllerTest {
         ApiResponseCommandDescription body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
-        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.code);
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
         assertThat(body.getMessage()).isEqualTo(
-                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)));
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode())));
 
         this.assertFailureCommandDescriptionFields(commandInfo, body.getDescription());
 

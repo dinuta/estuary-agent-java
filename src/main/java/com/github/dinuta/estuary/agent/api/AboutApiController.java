@@ -44,8 +44,8 @@ public class AboutApiController implements AboutApi {
         String accept = request.getHeader("Accept");
 
         return new ResponseEntity<>(ApiResponse.builder()
-                .code(ApiResponseCode.SUCCESS.code)
-                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
+                .code(ApiResponseCode.SUCCESS.getCode())
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
                 .description(SystemInformation.getSystemInfo())
                 .name(About.getAppName())
                 .version(About.getVersion())

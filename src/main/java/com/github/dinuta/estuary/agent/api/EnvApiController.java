@@ -52,8 +52,8 @@ public class EnvApiController implements EnvApi {
         String accept = request.getHeader("Accept");
 
         return new ResponseEntity<>(ApiResponse.builder()
-                .code(ApiResponseCode.SUCCESS.code)
-                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
+                .code(ApiResponseCode.SUCCESS.getCode())
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
                 .description(environment.getEnvAndVirtualEnv().get(envName))
                 .name(About.getAppName())
                 .version(About.getVersion())
@@ -66,8 +66,8 @@ public class EnvApiController implements EnvApi {
         String accept = request.getHeader("Accept");
 
         return new ResponseEntity<>(ApiResponse.builder()
-                .code(ApiResponseCode.SUCCESS.code)
-                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
+                .code(ApiResponseCode.SUCCESS.getCode())
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
                 .description(environment.getEnvAndVirtualEnv())
                 .name(About.getAppName())
                 .version(About.getVersion())
@@ -85,13 +85,13 @@ public class EnvApiController implements EnvApi {
             envVarsToBeAdded = objectMapper.readValue(envVars, LinkedHashMap.class);
             virtualEnvVarsAdded = environment.setExternalEnvVars(envVarsToBeAdded);
         } catch (JsonProcessingException e) {
-            throw new ApiException(ApiResponseCode.SET_ENV_VAR_FAILURE.code,
-                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.SET_ENV_VAR_FAILURE.code), envVars));
+            throw new ApiException(ApiResponseCode.SET_ENV_VAR_FAILURE.getCode(),
+                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.SET_ENV_VAR_FAILURE.getCode()), envVars));
         }
 
         return new ResponseEntity<>(ApiResponse.builder()
-                .code(ApiResponseCode.SUCCESS.code)
-                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
+                .code(ApiResponseCode.SUCCESS.getCode())
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
                 .description(virtualEnvVarsAdded)
                 .name(About.getAppName())
                 .version(About.getVersion())

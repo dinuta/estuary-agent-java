@@ -56,8 +56,8 @@ public class CommandParallelApiController implements CommandParallelApi {
 
         log.debug("Executing commands: " + commandsList.toString());
         return new ResponseEntity<>(ApiResponseCommandDescription.builder()
-                .code(ApiResponseCode.SUCCESS.code)
-                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
+                .code(ApiResponseCode.SUCCESS.getCode())
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
                 .description(commandRunner.runCommandsParallel(commandsList.toArray(new String[0])))
                 .name(About.getAppName())
                 .version(About.getVersion())
