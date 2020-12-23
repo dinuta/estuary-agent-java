@@ -12,6 +12,7 @@ import com.github.dinuta.estuary.agent.model.api.ApiResponse;
 import com.github.dinuta.estuary.agent.model.api.CommandDescription;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
+import lombok.Cleanup;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -110,6 +112,7 @@ public class CommandDetachedApiController implements CommandDetachedApi {
                 .started(true)
                 .finished(false)
                 .id(id)
+                .commands(new LinkedHashMap<>())
                 .build();
 
         if (commandContent == null) {
@@ -147,9 +150,8 @@ public class CommandDetachedApiController implements CommandDetachedApi {
     }
 
     private void writeContentInFile(File testInfo, CommandDescription commandDescription) throws IOException {
-        FileWriter fileWriter = new FileWriter(testInfo);
+        @Cleanup FileWriter fileWriter = new FileWriter(testInfo);
         fileWriter.write(objectMapper.writeValueAsString(commandDescription));
         fileWriter.flush();
-        fileWriter.close();
     }
 }

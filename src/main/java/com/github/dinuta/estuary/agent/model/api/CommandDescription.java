@@ -51,6 +51,7 @@ public class CommandDescription {
 
     @Getter
     @Setter
+    @Builder.Default
     @JsonProperty("commands")
     private LinkedHashMap<String, CommandStatus> commands = new LinkedHashMap<>();
 
