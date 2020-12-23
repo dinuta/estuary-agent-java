@@ -1,87 +1,39 @@
 package com.github.dinuta.estuary.agent.model.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CommandDetails {
+
+    @Getter
+    @Setter
+    @Builder.Default
     @JsonProperty("out")
     private String out = "";
 
+    @Getter
+    @Setter
+    @Builder.Default
     @JsonProperty("err")
     private String err = "";
 
+    @Getter
+    @Setter
     @JsonProperty("code")
-    private long code = 0;
+    private long code;
 
+    @Getter
+    @Setter
     @JsonProperty("pid")
-    private long pid = 0;
+    private long pid;
 
+    @Getter
+    @Setter
     @JsonProperty("args")
-    private String[] args = null;
-
-    public String getOut() {
-        return out;
-    }
-
-    public void setOut(String out) {
-        this.out = out;
-    }
-
-    public String getErr() {
-        return err;
-    }
-
-    public void setErr(String err) {
-        this.err = err;
-    }
-
-    public long getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public long getPid() {
-        return pid;
-    }
-
-    public void setPid(long pid) {
-        this.pid = pid;
-    }
-
-    public String[] getArgs() {
-        return args;
-    }
-
-    public void setArgs(String[] args) {
-        this.args = args;
-    }
-
-    public CommandDetails out(String out) {
-        this.out = out;
-        return this;
-    }
-
-    public CommandDetails err(String err) {
-        this.err = err;
-        return this;
-    }
-
-    public CommandDetails code(int code) {
-        this.code = code;
-        return this;
-    }
-
-    public CommandDetails pid(long pid) {
-        this.pid = pid;
-        return this;
-    }
-
-    public CommandDetails args(String[] args) {
-        this.args = args;
-        return this;
-    }
+    private String[] args;
 
     @Override
     public String toString() {

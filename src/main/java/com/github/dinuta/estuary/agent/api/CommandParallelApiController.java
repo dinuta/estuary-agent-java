@@ -55,13 +55,14 @@ public class CommandParallelApiController implements CommandParallelApi {
                 .stream().map(elem -> elem.stripLeading().stripTrailing()).collect(Collectors.toList());
 
         log.debug("Executing commands: " + commandsList.toString());
-        return new ResponseEntity<>(new ApiResponseCommandDescription()
+        return new ResponseEntity<>(ApiResponseCommandDescription.builder()
                 .code(ApiResponseCode.SUCCESS.code)
                 .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
                 .description(commandRunner.runCommandsParallel(commandsList.toArray(new String[0])))
                 .name(About.getAppName())
                 .version(About.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
-                .path(clientRequest.getRequestUri()), HttpStatus.OK);
+                .path(clientRequest.getRequestUri())
+                .build(), HttpStatus.OK);
     }
 }

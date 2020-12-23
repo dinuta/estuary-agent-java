@@ -1,154 +1,48 @@
 package com.github.dinuta.estuary.agent.model.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 
-import javax.validation.Valid;
 import java.util.Objects;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ApiResponseCommandDescription {
+    @Getter
+    @Setter
     @JsonProperty("code")
     private int code;
 
+    @Getter
+    @Setter
     @JsonProperty("message")
     private String message = null;
 
+    @Getter
+    @Setter
     @JsonProperty("description")
     private CommandDescription description = null;
 
+    @Getter
+    @Setter
     @JsonProperty("timestamp")
     private String timestamp = null;
 
+    @Getter
+    @Setter
     @JsonProperty("path")
     private String path = null;
 
+    @Getter
+    @Setter
     @JsonProperty("name")
     private String name = null;
 
+    @Getter
+    @Setter
     @JsonProperty("version")
     private String version = null;
-
-    public ApiResponseCommandDescription code(int code) {
-        this.code = code;
-        return this;
-    }
-
-    public ApiResponseCommandDescription message(String message) {
-        this.message = message;
-        return this;
-    }
-
-    public ApiResponseCommandDescription description(CommandDescription description) {
-        this.description = description;
-        return this;
-    }
-
-    public ApiResponseCommandDescription path(String path) {
-        this.path = path;
-        return this;
-    }
-
-    public ApiResponseCommandDescription timestamp(String timestamp) {
-        this.timestamp = timestamp;
-        return this;
-    }
-
-    public ApiResponseCommandDescription name(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public ApiResponseCommandDescription version(String version) {
-        this.version = version;
-        return this;
-    }
-
-    /**
-     * Get code
-     *
-     * @return code
-     **/
-    @ApiModelProperty(value = "")
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    /**
-     * Get message
-     *
-     * @return message
-     **/
-    @ApiModelProperty(value = "")
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    /**
-     * Get description
-     *
-     * @return description
-     **/
-    @ApiModelProperty(value = "")
-    public CommandDescription getDescription() {
-        return description;
-    }
-
-    public void setDescription(CommandDescription description) {
-        this.description = description;
-    }
-
-
-    /**
-     * Get timestamp
-     *
-     * @return timestamp
-     **/
-    @ApiModelProperty(value = "")
-    @Valid
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    /**
-     * Get name
-     *
-     * @return name
-     **/
-    @ApiModelProperty(value = "")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Get version
-     *
-     * @return version
-     **/
-    @ApiModelProperty(value = "")
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
 
     @Override
     public boolean equals(Object o) {

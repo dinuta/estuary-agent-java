@@ -12,6 +12,7 @@ import com.github.dinuta.estuary.agent.model.api.ApiResponse;
 import com.github.dinuta.estuary.agent.model.api.CommandDescription;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
+import lombok.Cleanup;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,14 +58,15 @@ public class CommandDetachedApiController implements CommandDetachedApi {
 
     public ResponseEntity<ApiResponse> commandDetachedDelete(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<>(new ApiResponse()
+        return new ResponseEntity<>(ApiResponse.builder()
                 .code(ApiResponseCode.NOT_IMPLEMENTED.code)
                 .message(ApiResponseMessage.getMessage(ApiResponseCode.NOT_IMPLEMENTED.code))
                 .description(ApiResponseMessage.getMessage(ApiResponseCode.NOT_IMPLEMENTED.code))
                 .name(About.getAppName())
                 .version(About.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
-                .path(clientRequest.getRequestUri()), HttpStatus.NOT_IMPLEMENTED);
+                .path(clientRequest.getRequestUri())
+                .build(), HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<ApiResponse> commandDetachedGet(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
@@ -90,24 +93,27 @@ public class CommandDetachedApiController implements CommandDetachedApi {
                     ApiResponseMessage.getMessage(ApiResponseCode.GET_TEST_INFO_FAILURE.code));
         }
 
-        return new ResponseEntity<>(new ApiResponse()
+        return new ResponseEntity<>(ApiResponse.builder()
                 .code(ApiResponseCode.SUCCESS.code)
                 .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
                 .description(commandDescription)
                 .name(About.getAppName())
                 .version(About.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
-                .path(clientRequest.getRequestUri()), HttpStatus.OK);
+                .path(clientRequest.getRequestUri())
+                .build(), HttpStatus.OK);
     }
 
     public ResponseEntity<ApiResponse> commandDetachedIdPost(@ApiParam(value = "Command detached id set by the user", required = true) @PathVariable("id") String id, @ApiParam(value = "List of commands to run one after the other. E.g. make/mvn/sh/npm", required = true) @Valid @RequestBody String commandContent, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
         String accept = request.getHeader("Accept");
         String testInfoFilename = new File(".").getAbsolutePath() + "/command_detached_info.json";
         File testInfo = new File(testInfoFilename);
-        CommandDescription commandDescription = new CommandDescription()
+        CommandDescription commandDescription = CommandDescription.builder()
                 .started(true)
                 .finished(false)
-                .id(id);
+                .id(id)
+                .commands(new LinkedHashMap<>())
+                .build();
 
         if (commandContent == null) {
             throw new ApiException(ApiResponseCode.EMPTY_REQUEST_BODY_PROVIDED.code,
@@ -132,20 +138,20 @@ public class CommandDetachedApiController implements CommandDetachedApi {
                     ApiResponseMessage.getMessage(ApiResponseCode.COMMAND_DETACHED_START_FAILURE.code));
         }
 
-        return new ResponseEntity<>(new ApiResponse()
+        return new ResponseEntity<>(ApiResponse.builder()
                 .code(ApiResponseCode.SUCCESS.code)
                 .message(String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)))
                 .description(id)
                 .name(About.getAppName())
                 .version(About.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
-                .path(clientRequest.getRequestUri()), HttpStatus.ACCEPTED);
+                .path(clientRequest.getRequestUri())
+                .build(), HttpStatus.ACCEPTED);
     }
 
     private void writeContentInFile(File testInfo, CommandDescription commandDescription) throws IOException {
-        FileWriter fileWriter = new FileWriter(testInfo);
+        @Cleanup FileWriter fileWriter = new FileWriter(testInfo);
         fileWriter.write(objectMapper.writeValueAsString(commandDescription));
         fileWriter.flush();
-        fileWriter.close();
     }
 }

@@ -33,13 +33,14 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
     @ExceptionHandler({ApiException.class})
     public ResponseEntity<ApiResponse> handleException(ApiException e, HttpServletRequest request) {
         log.error("Http error: " + ExceptionUtils.getStackTrace(e));
-        return new ResponseEntity<>(new ApiResponse()
+        return new ResponseEntity<>(ApiResponse.builder()
                 .code(e.getCode())
                 .message(e.getMessage())
                 .description(ExceptionUtils.getStackTrace(e))
                 .name(About.getAppName())
                 .version(About.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
-                .path(clientRequest.getRequestUri()), HttpStatus.INTERNAL_SERVER_ERROR);
+                .path(clientRequest.getRequestUri())
+                .build(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

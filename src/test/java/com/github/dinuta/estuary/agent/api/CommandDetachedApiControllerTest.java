@@ -110,8 +110,8 @@ public class CommandDetachedApiControllerTest {
 
         assertThat(LocalDateTime.parse(body1.getDescription().getFinishedat(), DateTimeConstants.PATTERN)).isBefore(LocalDateTime.now());
         assertThat(LocalDateTime.parse(body1.getDescription().getStartedat(), DateTimeConstants.PATTERN)).isBefore(LocalDateTime.now());
-        assertThat(body1.getDescription().getStarted()).isEqualTo(true);
-        assertThat(body1.getDescription().getFinished()).isEqualTo(false);
+        assertThat(body1.getDescription().isStarted()).isEqualTo(true);
+        assertThat(body1.getDescription().isFinished()).isEqualTo(false);
         assertThat(body1.getDescription().getCommands().get(command1).getStatus()).isEqualTo("finished");
         assertThat(body1.getDescription().getCommands().get(command2).getStatus()).isEqualTo("in progress");
 
@@ -121,8 +121,8 @@ public class CommandDetachedApiControllerTest {
         assertThat(Math.round(body1.getDescription().getDuration())).isEqualTo(Math.round(sleep1 + sleep2));
         assertThat(LocalDateTime.parse(body1.getDescription().getFinishedat(), DateTimeConstants.PATTERN)).isBefore(LocalDateTime.now());
         assertThat(LocalDateTime.parse(body1.getDescription().getStartedat(), DateTimeConstants.PATTERN)).isBefore(LocalDateTime.now());
-        assertThat(body1.getDescription().getStarted()).isEqualTo(false);
-        assertThat(body1.getDescription().getFinished()).isEqualTo(true);
+        assertThat(body1.getDescription().isStarted()).isEqualTo(false);
+        assertThat(body1.getDescription().isFinished()).isEqualTo(true);
         assertThat(body1.getDescription().getId()).isEqualTo(testId);
         assertThat(body1.getDescription().getPid()).isGreaterThanOrEqualTo(0);
         assertThat(Math.round(body1.getDescription().getCommands().get(command1).getDuration())).isEqualTo(Math.round(sleep1));

@@ -90,14 +90,15 @@ public class FileApiController implements FileApi {
                     ApiResponseMessage.getMessage(ApiResponseCode.UPLOAD_FILE_FAILURE.code));
         }
 
-        return new ResponseEntity<>(new ApiResponse()
+        return new ResponseEntity<>(ApiResponse.builder()
                 .code(ApiResponseCode.SUCCESS.code)
                 .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
                 .description(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
                 .name(About.getAppName())
                 .version(About.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
-                .path(clientRequest.getRequestUri()), HttpStatus.OK);
+                .path(clientRequest.getRequestUri())
+                .build(), HttpStatus.OK);
     }
 
 }

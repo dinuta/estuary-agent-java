@@ -43,14 +43,15 @@ public class AboutApiController implements AboutApi {
     public ResponseEntity<ApiResponse> aboutGet(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
         String accept = request.getHeader("Accept");
 
-        return new ResponseEntity<>(new ApiResponse()
+        return new ResponseEntity<>(ApiResponse.builder()
                 .code(ApiResponseCode.SUCCESS.code)
                 .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
                 .description(SystemInformation.getSystemInfo())
                 .name(About.getAppName())
                 .version(About.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
-                .path(clientRequest.getRequestUri()), HttpStatus.OK);
+                .path(clientRequest.getRequestUri())
+                .build(), HttpStatus.OK);
     }
 
 }
