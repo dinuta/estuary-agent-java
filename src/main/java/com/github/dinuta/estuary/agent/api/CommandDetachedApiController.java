@@ -56,14 +56,15 @@ public class CommandDetachedApiController implements CommandDetachedApi {
 
     public ResponseEntity<ApiResponse> commandDetachedDelete(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<>(new ApiResponse()
+        return new ResponseEntity<>(ApiResponse.builder()
                 .code(ApiResponseCode.NOT_IMPLEMENTED.code)
                 .message(ApiResponseMessage.getMessage(ApiResponseCode.NOT_IMPLEMENTED.code))
                 .description(ApiResponseMessage.getMessage(ApiResponseCode.NOT_IMPLEMENTED.code))
                 .name(About.getAppName())
                 .version(About.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
-                .path(clientRequest.getRequestUri()), HttpStatus.NOT_IMPLEMENTED);
+                .path(clientRequest.getRequestUri())
+                .build(), HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<ApiResponse> commandDetachedGet(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
@@ -90,14 +91,15 @@ public class CommandDetachedApiController implements CommandDetachedApi {
                     ApiResponseMessage.getMessage(ApiResponseCode.GET_TEST_INFO_FAILURE.code));
         }
 
-        return new ResponseEntity<>(new ApiResponse()
+        return new ResponseEntity<>(ApiResponse.builder()
                 .code(ApiResponseCode.SUCCESS.code)
                 .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
                 .description(commandDescription)
                 .name(About.getAppName())
                 .version(About.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
-                .path(clientRequest.getRequestUri()), HttpStatus.OK);
+                .path(clientRequest.getRequestUri())
+                .build(), HttpStatus.OK);
     }
 
     public ResponseEntity<ApiResponse> commandDetachedIdPost(@ApiParam(value = "Command detached id set by the user", required = true) @PathVariable("id") String id, @ApiParam(value = "List of commands to run one after the other. E.g. make/mvn/sh/npm", required = true) @Valid @RequestBody String commandContent, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
@@ -133,14 +135,15 @@ public class CommandDetachedApiController implements CommandDetachedApi {
                     ApiResponseMessage.getMessage(ApiResponseCode.COMMAND_DETACHED_START_FAILURE.code));
         }
 
-        return new ResponseEntity<>(new ApiResponse()
+        return new ResponseEntity<>(ApiResponse.builder()
                 .code(ApiResponseCode.SUCCESS.code)
                 .message(String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code)))
                 .description(id)
                 .name(About.getAppName())
                 .version(About.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
-                .path(clientRequest.getRequestUri()), HttpStatus.ACCEPTED);
+                .path(clientRequest.getRequestUri())
+                .build(), HttpStatus.ACCEPTED);
     }
 
     private void writeContentInFile(File testInfo, CommandDescription commandDescription) throws IOException {

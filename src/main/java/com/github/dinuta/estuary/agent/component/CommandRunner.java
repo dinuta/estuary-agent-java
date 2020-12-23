@@ -131,21 +131,21 @@ public class CommandRunner {
         String pythonExec = "start.py";
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
         ArrayList<String> fullCmd = getPlatformCommand();
-        String cmdsSeparatedBySemicolon = "";
+        String commandsSeparatedBySemicolon = "";
 
         for (int i = 1; i < command.size(); i++) {
-            cmdsSeparatedBySemicolon += command.get(i) + ";";
+            commandsSeparatedBySemicolon += command.get(i) + ";";
         }
 
         if (isWindows) {
             fullCmd.add(String.format("%s/%s", Paths.get("").toAbsolutePath().toString(), pythonExec));
             fullCmd.add(this.doQuoteCmd(command.get(0)) + " " +
-                    this.doQuoteCmd(StringUtils.stripEnd(cmdsSeparatedBySemicolon, ";")));
+                    this.doQuoteCmd(StringUtils.stripEnd(commandsSeparatedBySemicolon, ";")));
         } else {
             fullCmd.add(
                     this.doQuoteCmd(String.format("%s/%s", Paths.get("").toAbsolutePath().toString(), pythonExec)) + " " +
                             this.doQuoteCmd(command.get(0)) + " " +
-                            this.doQuoteCmd(StringUtils.stripEnd(cmdsSeparatedBySemicolon, ";")));
+                            this.doQuoteCmd(StringUtils.stripEnd(commandsSeparatedBySemicolon, ";")));
         }
 
         return this.runStartCmdDetached(fullCmd.toArray(new String[0])).start().getFuture();

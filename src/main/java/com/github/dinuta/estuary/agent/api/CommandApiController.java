@@ -65,13 +65,14 @@ public class CommandApiController implements CommandApi {
             throw new ApiException(ApiResponseCode.COMMAND_EXEC_FAILURE.code,
                     ApiResponseMessage.getMessage(ApiResponseCode.COMMAND_EXEC_FAILURE.code));
         }
-        return new ResponseEntity<>(new ApiResponseCommandDescription()
+        return new ResponseEntity<>(ApiResponseCommandDescription.builder()
                 .code(ApiResponseCode.SUCCESS.code)
                 .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.code))
                 .description(commandDescription)
                 .name(About.getAppName())
                 .version(About.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
-                .path(clientRequest.getRequestUri()), HttpStatus.OK);
+                .path(clientRequest.getRequestUri())
+                .build(), HttpStatus.OK);
     }
 }

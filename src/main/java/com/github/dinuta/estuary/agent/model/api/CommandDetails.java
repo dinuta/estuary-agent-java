@@ -3,32 +3,37 @@ package com.github.dinuta.estuary.agent.model.api;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CommandDetails {
 
     @Getter
     @Setter
+    @Builder.Default
     @JsonProperty("out")
-    private String out;
+    private String out = "";
+
     @Getter
     @Setter
+    @Builder.Default
     @JsonProperty("err")
-    private String err;
+    private String err = "";
+
     @Getter
     @Setter
     @JsonProperty("code")
     private long code;
+
     @Getter
     @Setter
     @JsonProperty("pid")
     private long pid;
+
     @Getter
     @Setter
     @JsonProperty("args")
     private String[] args;
-
 
     @Override
     public String toString() {
