@@ -193,13 +193,14 @@ public class CommandRunner {
 
         //start threads that reads the stdout, stderr, pid and others
         for (int i = 0; i < processStates.size(); i++) {
-            CommandStatusThread cmdStatusThread = new CommandStatusThread(this, new CommandParallel()
+            CommandStatusThread cmdStatusThread = new CommandStatusThread(this, CommandParallel.builder()
                     .commandDescription(commandDescription)
                     .commandStatuses(commandStatuses)
                     .commandsStatus(commandsStatus)
                     .command(commands[i])
-                    .process(processStates.get(i))
-                    .threadId(i));
+                    .processState(processStates.get(i))
+                    .threadId(i)
+                    .build());
             threads.add(new Thread(cmdStatusThread));
             threads.get(i).start();
         }
