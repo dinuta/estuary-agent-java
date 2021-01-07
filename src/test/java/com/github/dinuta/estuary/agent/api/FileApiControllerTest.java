@@ -153,4 +153,30 @@ public class FileApiControllerTest {
         assertThat(body.getVersion()).isEqualTo(About.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
+
+    @Test
+    public void whenUploadingFileAndBodyIsEmptyThenApiReturnsSuccess() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put(HeaderConstants.FILE_PATH, "myEmptyFile.txt");
+
+        ResponseEntity<ApiResponse> responseEntity =
+                this.restTemplate
+                        .exchange(SERVER_PREFIX + port + "/file",
+                                HttpMethod.POST,
+                                httpRequestUtils.getRequestEntityContentTypeAppJson(null, headers),
+                                ApiResponse.class);
+
+        ApiResponse body = responseEntity.getBody();
+
+        assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
+        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
+        assertThat(body.getMessage()).isEqualTo(
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode())));
+        assertThat(body.getDescription()).isEqualTo(
+                String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode())));
+        assertThat(body.getName()).isEqualTo(About.getAppName());
+        assertThat(body.getPath()).isEqualTo("/file?");
+        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
+    }
 }

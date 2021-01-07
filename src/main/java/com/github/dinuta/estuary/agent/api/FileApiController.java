@@ -68,7 +68,7 @@ public class FileApiController implements FileApi {
                 .body(resource);
     }
 
-    public ResponseEntity<ApiResponse> filePut(@ApiParam(value = "The content of the file", required = true) @Valid @RequestBody byte[] content, @ApiParam(value = "", required = true) @RequestHeader(value = "File-Path", required = false) String filePath, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+    public ResponseEntity<ApiResponse> filePut(@ApiParam(value = "The content of the file") @Valid @RequestBody(required = false) byte[] content, @ApiParam(value = "", required = true) @RequestHeader(value = "File-Path", required = false) String filePath, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
         String accept = request.getHeader("Accept");
         String headerName = "File-Path";
 
@@ -76,11 +76,6 @@ public class FileApiController implements FileApi {
         if (filePath == null) {
             throw new ApiException(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.getCode(),
                     String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.getCode()), headerName));
-        }
-
-        if (content == null) {
-            throw new ApiException(ApiResponseCode.EMPTY_REQUEST_BODY_PROVIDED.getCode(),
-                    ApiResponseMessage.getMessage(ApiResponseCode.EMPTY_REQUEST_BODY_PROVIDED.getCode()));
         }
 
         try (OutputStream outputStream = new FileOutputStream(new File(filePath))) {
@@ -101,4 +96,7 @@ public class FileApiController implements FileApi {
                 .build(), HttpStatus.OK);
     }
 
+    public ResponseEntity<ApiResponse> filePost(@ApiParam(value = "The content of the file") @Valid @RequestBody(required = false) byte[] content, @ApiParam(value = "", required = true) @RequestHeader(value = "File-Path", required = false) String filePath, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+        return filePut(content, filePath, token);
+    }
 }
