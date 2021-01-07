@@ -39,7 +39,19 @@ public interface FileApi {
             produces = {"application/json", "text/plain"},
             consumes = {"application/json", "application/x-www-form-urlencoded", "application/octet-stream", "text/plain"},
             method = RequestMethod.PUT)
-    default ResponseEntity<ApiResponse> filePut(@ApiParam(value = "The content of the file", required = true) @Valid @RequestBody byte[] content, @ApiParam(value = "", required = true) @RequestHeader(value = "File-Path", required = false) String filePath, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+    default ResponseEntity<ApiResponse> filePut(@ApiParam(value = "The content of the file") @Valid @RequestBody(required = false) byte[] content, @ApiParam(value = "", required = true) @RequestHeader(value = "File-Path", required = false) String filePath, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    @ApiOperation(value = "Uploads a file no mater the format. Binary or raw", nickname = "filePost", notes = "", response = ApiResponse.class, tags = {"estuary-agent",})
+    @ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "The content of the file was uploaded successfully", response = ApiResponse.class),
+            @io.swagger.annotations.ApiResponse(code = 404, message = "Failure, the file content could not be uploaded", response = ApiResponse.class)})
+    @RequestMapping(value = "/file",
+            produces = {"application/json", "text/plain"},
+            consumes = {"application/json", "application/x-www-form-urlencoded", "application/octet-stream", "text/plain"},
+            method = RequestMethod.POST)
+    default ResponseEntity<ApiResponse> filePost(@ApiParam(value = "The content of the file") @Valid @RequestBody(required = false) byte[] content, @ApiParam(value = "", required = true) @RequestHeader(value = "File-Path", required = false) String filePath, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
