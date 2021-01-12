@@ -37,6 +37,15 @@ public interface EnvApi {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    @ApiOperation(value = "Deletes the custom defined env vars contained in the virtual environment", nickname = "envDelete", notes = "", response = ApiResponse.class, tags = {"estuary-agent",})
+    @ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "Deletes the entire virtual env vars, but keeping system env vars.", response = ApiResponse.class)})
+    @RequestMapping(value = "/env",
+            produces = {"application/json"},
+            method = RequestMethod.DELETE)
+    default ResponseEntity<ApiResponse> envDelete(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
     @ApiOperation(value = "Set environment variables", nickname = "envPost", notes = "", response = ApiResponse.class, tags = {"estuary-agent",})
     @ApiResponses(value = {

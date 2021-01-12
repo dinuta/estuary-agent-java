@@ -22,6 +22,20 @@ public class VirtualEnvironmentTest {
     }
 
     @Test
+    public void whenSettingEnvVarsAndDeletingAllEnvVarsThenVirtualEnvIsEmpty() {
+        Map<String, String> envVarsToBeSet = new LinkedHashMap<>();
+        envVarsToBeSet.put("FOO1", "BAR1");
+        envVarsToBeSet.put("FOO2", "BAR2");
+        VirtualEnvironment virtualEnvironment = new VirtualEnvironment();
+        Map<String, String> envVarsSet = virtualEnvironment.setExternalEnvVars(envVarsToBeSet);
+        assertThat(envVarsSet).isEqualTo(envVarsToBeSet);
+
+        virtualEnvironment.cleanVirtualEnv();
+        assertThat(virtualEnvironment.getVirtualEnv().size()).isEqualTo(0);
+
+    }
+
+    @Test
     public void whenSettingAlreadyExistingSystemEnvVarThenIsNotSet() {
         Map<String, String> envVarsToBeSet = new LinkedHashMap<>();
         envVarsToBeSet.put("FOO1", "BAR1");
