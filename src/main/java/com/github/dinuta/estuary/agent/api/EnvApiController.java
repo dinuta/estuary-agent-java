@@ -76,6 +76,22 @@ public class EnvApiController implements EnvApi {
                 .build(), HttpStatus.OK);
     }
 
+    public ResponseEntity<ApiResponse> envDelete(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+        String accept = request.getHeader("Accept");
+
+        environment.cleanVirtualEnv();
+
+        return new ResponseEntity<>(ApiResponse.builder()
+                .code(ApiResponseCode.SUCCESS.getCode())
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
+                .description(environment.getVirtualEnv())
+                .name(About.getAppName())
+                .version(About.getVersion())
+                .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
+                .path(clientRequest.getRequestUri())
+                .build(), HttpStatus.OK);
+    }
+
 
     public ResponseEntity<ApiResponse> envPost(@ApiParam(value = "List of env vars by key-value pair in JSON format", required = true) @Valid @RequestBody String envVars, @ApiParam(value = "Authentication Token") @RequestHeader(value = "Token", required = false) String token) {
         Map<String, String> envVarsToBeAdded;

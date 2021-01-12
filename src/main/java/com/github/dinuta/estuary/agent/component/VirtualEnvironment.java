@@ -22,7 +22,7 @@ public class VirtualEnvironment {
     private final ImmutableMap<String, String> environment = ImmutableMap.copyOf(System.getenv());
     private final Map<String, String> virtualEnvironment = new LinkedHashMap<>();
 
-    public static final int VIRTUAL_ENVIRONMENT_MAX_SIZE = 100;
+    public static final int VIRTUAL_ENVIRONMENT_MAX_SIZE = 500;
 
     public VirtualEnvironment() {
         this.setExtraEnvVarsFromFile();
@@ -96,11 +96,18 @@ public class VirtualEnvironment {
     }
 
     /**
-     * Gets the virtual environment variables
+     * Gets the virtual environment env vars
      *
      * @return Map containing mutable env vars set by the user
      */
     public Map<String, String> getVirtualEnv() {
         return virtualEnvironment;
+    }
+
+    /**
+     * Deletes all the custom env vars contained in the virtual environment
+     */
+    public void cleanVirtualEnv() {
+        virtualEnvironment.clear();
     }
 }
