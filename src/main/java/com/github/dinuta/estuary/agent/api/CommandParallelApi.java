@@ -1,7 +1,7 @@
 package com.github.dinuta.estuary.agent.api;
 
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
-import com.github.dinuta.estuary.agent.model.api.ApiResponseCommandDescription;
+import com.github.dinuta.estuary.agent.model.api.CommandDescription;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -28,7 +28,7 @@ public interface CommandParallelApi {
             produces = {"application/json"},
             consumes = {"text/plain", "application/json", "application/x-www-form-urlencoded"},
             method = RequestMethod.POST)
-    default ResponseEntity<ApiResponseCommandDescription> commandPost(@ApiParam(value = "Commands to run. E.g. ls -lrt", required = true) @Valid @RequestBody String commands, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) throws IOException {
+    default ResponseEntity<ApiResponse<CommandDescription>> commandPost(@ApiParam(value = "Commands to run. E.g. ls -lrt", required = true) @Valid @RequestBody String commands, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) throws IOException {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
