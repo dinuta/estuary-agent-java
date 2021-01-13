@@ -8,7 +8,7 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiResponse {
+public class ApiResponse<T> {
     @Getter
     @Setter
     @JsonProperty("code")
@@ -22,7 +22,7 @@ public class ApiResponse {
     @Getter
     @Setter
     @JsonProperty("description")
-    private Object description = null;
+    private T description = null;
 
     @Getter
     @Setter

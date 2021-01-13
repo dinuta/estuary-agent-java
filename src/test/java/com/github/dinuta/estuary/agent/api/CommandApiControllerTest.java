@@ -5,7 +5,7 @@ import com.github.dinuta.estuary.agent.constants.About;
 import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
-import com.github.dinuta.estuary.agent.model.api.ApiResponseCommandDescription;
+import com.github.dinuta.estuary.agent.model.api.ApiResponse;
 import com.github.dinuta.estuary.agent.model.api.CommandDescription;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,9 +51,9 @@ public class CommandApiControllerTest {
             }
     )
     public void whenSendingCorrectCommandsThenApiReturnsZeroExitCode(String commandInfo) {
-        ResponseEntity<ApiResponseCommandDescription> responseEntity = getApiResponseCommandDescriptionResponseEntity(commandInfo.split(";")[0]);
+        ResponseEntity<ApiResponse<CommandDescription>> responseEntity = getApiResponseCommandDescriptionResponseEntity(commandInfo.split(";")[0]);
 
-        ApiResponseCommandDescription body = responseEntity.getBody();
+        ApiResponse<CommandDescription> body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
         assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
@@ -71,10 +72,10 @@ public class CommandApiControllerTest {
         float sleep = 4f; // default is 3 secs
         float timeout = 3f;
         String command = "sleep " + sleep;
-        ResponseEntity<ApiResponseCommandDescription> responseEntity =
+        ResponseEntity<ApiResponse<CommandDescription>> responseEntity =
                 getApiResponseCommandDescriptionResponseEntity(command);
 
-        ApiResponseCommandDescription body = responseEntity.getBody();
+        ApiResponse<CommandDescription> body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
         assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
@@ -102,10 +103,10 @@ public class CommandApiControllerTest {
         String command1 = "sleep " + sleep1;
         String command2 = "sleep " + sleep2;
         String command = command1 + "\n" + command2;
-        ResponseEntity<ApiResponseCommandDescription> responseEntity =
+        ResponseEntity<ApiResponse<CommandDescription>> responseEntity =
                 getApiResponseCommandDescriptionResponseEntity(command);
 
-        ApiResponseCommandDescription body = responseEntity.getBody();
+        ApiResponse<CommandDescription> body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
         assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
@@ -136,10 +137,10 @@ public class CommandApiControllerTest {
         String command1 = "sleep " + sleep1;
         String command2 = "sleep " + sleep2;
         String command = command1 + "\n" + command2;
-        ResponseEntity<ApiResponseCommandDescription> responseEntity =
+        ResponseEntity<ApiResponse<CommandDescription>> responseEntity =
                 getApiResponseCommandDescriptionResponseEntity(command);
 
-        ApiResponseCommandDescription body = responseEntity.getBody();
+        ApiResponse<CommandDescription> body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
         assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
@@ -162,10 +163,10 @@ public class CommandApiControllerTest {
         String command1 = "ls -lrt";
         String command2 = "whatever";
         String command = command1 + "\n" + command2;
-        ResponseEntity<ApiResponseCommandDescription> responseEntity =
+        ResponseEntity<ApiResponse<CommandDescription>> responseEntity =
                 getApiResponseCommandDescriptionResponseEntity(command);
 
-        ApiResponseCommandDescription body = responseEntity.getBody();
+        ApiResponse<CommandDescription> body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
         assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
@@ -194,9 +195,9 @@ public class CommandApiControllerTest {
             }
     )
     public void whenSendingIncorrectCommandsThenApiReturnsNonZeroExitCode(String commandInfo) {
-        ResponseEntity<ApiResponseCommandDescription> responseEntity = getApiResponseCommandDescriptionResponseEntity(commandInfo.split(";")[0]);
+        ResponseEntity<ApiResponse<CommandDescription>> responseEntity = getApiResponseCommandDescriptionResponseEntity(commandInfo.split(";")[0]);
 
-        ApiResponseCommandDescription body = responseEntity.getBody();
+        ApiResponse<CommandDescription> body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
         assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
@@ -211,14 +212,15 @@ public class CommandApiControllerTest {
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 
-    private ResponseEntity<ApiResponseCommandDescription> getApiResponseCommandDescriptionResponseEntity(String command) {
+    private ResponseEntity<ApiResponse<CommandDescription>> getApiResponseCommandDescriptionResponseEntity(String command) {
         Map<String, String> headers = new HashMap<>();
 
         return this.restTemplate
                 .exchange(SERVER_PREFIX + port + "/command",
                         HttpMethod.POST,
                         httpRequestUtils.getRequestEntityContentTypeAppJson(command, headers),
-                        ApiResponseCommandDescription.class);
+                        new ParameterizedTypeReference<ApiResponse<CommandDescription>>() {
+                        });
     }
 
     private void assertSuccessCommandDescriptionFields(String commandInfo, CommandDescription body) {

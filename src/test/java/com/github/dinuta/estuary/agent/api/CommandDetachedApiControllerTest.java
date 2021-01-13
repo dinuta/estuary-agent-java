@@ -6,7 +6,7 @@ import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
-import com.github.dinuta.estuary.agent.model.api.ApiResponseCommandDescription;
+import com.github.dinuta.estuary.agent.model.api.CommandDescription;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -69,7 +70,7 @@ public class CommandDetachedApiControllerTest {
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
 
         Thread.sleep(1000);
-        ApiResponseCommandDescription body1 = getApiResponseCommandDescriptionResponseEntity().getBody();
+        ApiResponse<CommandDescription> body1 = getApiResponseCommandDescriptionResponseEntity().getBody();
 
         assertThat(body1.getDescription().getCommands().get(commandInfo.split(";")[0]).getDetails().getCode()).isEqualTo(0);
         assertThat(body1.getDescription().getCommands().get(commandInfo.split(";")[0]).getDetails().getErr()).isEqualTo("");
@@ -105,7 +106,7 @@ public class CommandDetachedApiControllerTest {
 
 
         await().atMost(sleep1 + 1, SECONDS).until(isCommandFinished(command1));
-        ApiResponseCommandDescription body1 =
+        ApiResponse<CommandDescription> body1 =
                 getApiResponseCommandDescriptionResponseEntity().getBody();
 
         assertThat(LocalDateTime.parse(body1.getDescription().getFinishedat(), DateTimeConstants.PATTERN)).isBefore(LocalDateTime.now());
@@ -137,8 +138,8 @@ public class CommandDetachedApiControllerTest {
 
     public Callable<Boolean> isCommandFinished(String command) {
         return () -> {
-            ResponseEntity<ApiResponseCommandDescription> responseEntity = getApiResponseCommandDescriptionResponseEntity();
-            ApiResponseCommandDescription body = responseEntity.getBody();
+            ResponseEntity<ApiResponse<CommandDescription>> responseEntity = getApiResponseCommandDescriptionResponseEntity();
+            ApiResponse<CommandDescription> body = responseEntity.getBody();
 
             if (body.getDescription().getCommands().get(command) == null)
                 return Boolean.FALSE;
@@ -148,14 +149,15 @@ public class CommandDetachedApiControllerTest {
     }
 
 
-    private ResponseEntity<ApiResponseCommandDescription> getApiResponseCommandDescriptionResponseEntity() {
+    private ResponseEntity<ApiResponse<CommandDescription>> getApiResponseCommandDescriptionResponseEntity() {
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, MediaType.TEXT_PLAIN.toString());
         return this.restTemplate
                 .exchange(SERVER_PREFIX + port + "/commanddetached",
                         HttpMethod.GET,
                         httpRequestUtils.getRequestEntityContentTypeAppJson(null, headers),
-                        ApiResponseCommandDescription.class);
+                        new ParameterizedTypeReference<ApiResponse<CommandDescription>>() {
+                        });
     }
 
     private ResponseEntity<ApiResponse> postApiResponseCommandDescriptionResponseEntity(String command, String id) {
