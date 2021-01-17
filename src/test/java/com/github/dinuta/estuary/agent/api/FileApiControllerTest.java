@@ -2,7 +2,7 @@ package com.github.dinuta.estuary.agent.api;
 
 import com.github.dinuta.estuary.agent.api.constants.HeaderConstants;
 import com.github.dinuta.estuary.agent.api.utils.HttpRequestUtils;
-import com.github.dinuta.estuary.agent.constants.About;
+import com.github.dinuta.estuary.agent.component.About;
 import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
@@ -37,6 +37,9 @@ public class FileApiControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Autowired
+    private About about;
 
     @Test
     public void whenCallingGetThenInformationIsRetrivedOk() {
@@ -74,8 +77,8 @@ public class FileApiControllerTest {
         assertThat(body.getMessage()).isEqualTo(
                 String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.getCode()), HeaderConstants.FILE_PATH));
         assertThat(body.getDescription().toString()).contains(String.format(ApiResponseMessage.getMessage(ApiResponseCode.HTTP_HEADER_NOT_PROVIDED.getCode()), HeaderConstants.FILE_PATH));
-        assertThat(body.getName()).isEqualTo(About.getAppName());
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
 
     }
@@ -99,8 +102,8 @@ public class FileApiControllerTest {
         assertThat(body.getMessage()).isEqualTo(
                 String.format(ApiResponseMessage.getMessage(ApiResponseCode.GET_FILE_FAILURE.getCode())));
         assertThat(body.getDescription().toString()).contains("Exception");
-        assertThat(body.getName()).isEqualTo(About.getAppName());
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 
@@ -123,8 +126,8 @@ public class FileApiControllerTest {
         assertThat(body.getMessage()).isEqualTo(
                 String.format(ApiResponseMessage.getMessage(ApiResponseCode.UPLOAD_FILE_FAILURE.getCode())));
         assertThat(body.getDescription().toString()).contains("Exception");
-        assertThat(body.getName()).isEqualTo(About.getAppName());
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 
@@ -148,9 +151,9 @@ public class FileApiControllerTest {
                 String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode())));
         assertThat(body.getDescription()).isEqualTo(
                 String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode())));
-        assertThat(body.getName()).isEqualTo(About.getAppName());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
         assertThat(body.getPath()).isEqualTo("/file?");
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 
@@ -174,9 +177,9 @@ public class FileApiControllerTest {
                 String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode())));
         assertThat(body.getDescription()).isEqualTo(
                 String.format(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode())));
-        assertThat(body.getName()).isEqualTo(About.getAppName());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
         assertThat(body.getPath()).isEqualTo("/file?");
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 }

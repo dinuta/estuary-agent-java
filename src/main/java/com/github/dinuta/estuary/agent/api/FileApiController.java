@@ -1,8 +1,8 @@
 package com.github.dinuta.estuary.agent.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.dinuta.estuary.agent.component.About;
 import com.github.dinuta.estuary.agent.component.ClientRequest;
-import com.github.dinuta.estuary.agent.constants.About;
 import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
@@ -39,6 +39,9 @@ public class FileApiController implements FileApi {
 
     @Autowired
     private ClientRequest clientRequest;
+
+    @Autowired
+    private About about;
 
     @Autowired
     public FileApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -89,8 +92,8 @@ public class FileApiController implements FileApi {
                 .code(ApiResponseCode.SUCCESS.getCode())
                 .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
                 .description(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
-                .name(About.getAppName())
-                .version(About.getVersion())
+                .name(about.getAppName())
+                .version(about.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
                 .path(clientRequest.getRequestUri())
                 .build(), HttpStatus.OK);

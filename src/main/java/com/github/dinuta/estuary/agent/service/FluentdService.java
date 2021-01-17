@@ -2,8 +2,8 @@ package com.github.dinuta.estuary.agent.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.dinuta.estuary.agent.component.About;
 import com.github.dinuta.estuary.agent.component.VirtualEnvironment;
-import com.github.dinuta.estuary.agent.constants.About;
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
 import com.github.dinuta.estuary.agent.model.logging.EnrichedMessage;
 import com.github.dinuta.estuary.agent.model.logging.ParentMessage;
@@ -31,6 +31,9 @@ public class FluentdService {
 
     @Autowired
     private Environment environment;
+
+    @Autowired
+    private About about;
 
     public FluentdService() {
         this.setFluentdLogger();
@@ -63,9 +66,9 @@ public class FluentdService {
     private EnrichedMessage enrichLog(String levelCode, ParentMessage parrentMessage) {
         DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
         EnrichedMessage enrichedMessage = new EnrichedMessage();
-        enrichedMessage.setName(About.getAppName());
+        enrichedMessage.setName(about.getAppName());
         enrichedMessage.setPort(environment.getProperty("local.server.port"));
-        enrichedMessage.setVersion(About.getVersion());
+        enrichedMessage.setVersion(about.getVersion());
         enrichedMessage.setUname(new String[]{System.getProperty("os.name")});
         enrichedMessage.setJava(System.getProperty("java.vm.vendor") + " " + System.getProperty("java.runtime.version"));
         enrichedMessage.setPid(ProcessHandle.current().pid());
@@ -123,7 +126,7 @@ public class FluentdService {
 
     private void setFluentdLogger() {
         if (virtualEnvironment.getEnvAndVirtualEnv().get(FLUENTD_IP_PORT) != null)
-            this.fluentLogger = FluentLogger.getLogger(About.getAppName(),
+            this.fluentLogger = FluentLogger.getLogger(about.getAppName(),
                     virtualEnvironment.getEnvAndVirtualEnv().get(FLUENTD_IP_PORT).split(":")[0],
                     Integer.parseInt(virtualEnvironment.getEnvAndVirtualEnv().get(FLUENTD_IP_PORT).split(":")[1]));
     }

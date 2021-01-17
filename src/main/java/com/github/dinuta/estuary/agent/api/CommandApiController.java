@@ -1,9 +1,9 @@
 package com.github.dinuta.estuary.agent.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.dinuta.estuary.agent.component.About;
 import com.github.dinuta.estuary.agent.component.ClientRequest;
 import com.github.dinuta.estuary.agent.component.CommandRunner;
-import com.github.dinuta.estuary.agent.constants.About;
 import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
@@ -46,6 +46,9 @@ public class CommandApiController implements CommandApi {
     private ClientRequest clientRequest;
 
     @Autowired
+    private About about;
+
+    @Autowired
     public CommandApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
         this.request = request;
@@ -69,8 +72,8 @@ public class CommandApiController implements CommandApi {
                 .code(ApiResponseCode.SUCCESS.getCode())
                 .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
                 .description(commandDescription)
-                .name(About.getAppName())
-                .version(About.getVersion())
+                .name(about.getAppName())
+                .version(about.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
                 .path(clientRequest.getRequestUri())
                 .build(), HttpStatus.OK);
