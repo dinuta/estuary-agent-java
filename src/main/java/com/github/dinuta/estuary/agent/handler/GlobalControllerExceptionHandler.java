@@ -1,8 +1,8 @@
 package com.github.dinuta.estuary.agent.handler;
 
 
+import com.github.dinuta.estuary.agent.component.About;
 import com.github.dinuta.estuary.agent.component.ClientRequest;
-import com.github.dinuta.estuary.agent.constants.About;
 import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
 import com.github.dinuta.estuary.agent.exception.ApiException;
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
@@ -30,6 +30,9 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
     @Autowired
     private ClientRequest clientRequest;
 
+    @Autowired
+    private About about;
+
     @ExceptionHandler({ApiException.class})
     public ResponseEntity<ApiResponse> handleException(ApiException e, HttpServletRequest request) {
         log.error("Http error: " + ExceptionUtils.getStackTrace(e));
@@ -37,8 +40,8 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
                 .code(e.getCode())
                 .message(e.getMessage())
                 .description(ExceptionUtils.getStackTrace(e))
-                .name(About.getAppName())
-                .version(About.getVersion())
+                .name(about.getAppName())
+                .version(about.getVersion())
                 .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
                 .path(clientRequest.getRequestUri())
                 .build(), HttpStatus.INTERNAL_SERVER_ERROR);

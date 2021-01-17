@@ -1,6 +1,7 @@
 package com.github.dinuta.estuary.agent.configuration;
 
-import com.github.dinuta.estuary.agent.constants.About;
+import com.github.dinuta.estuary.agent.component.About;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -15,6 +16,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerDocumentationConfig {
 
+    @Autowired
+    private About about;
+
     ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("estuary-agent")
@@ -22,7 +26,7 @@ public class SwaggerDocumentationConfig {
                 .license("Apache 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
                 .termsOfServiceUrl("")
-                .version(About.getVersion())
+                .version(about.getVersion())
                 .contact(new Contact("Catalin Dinuta", "https://dinuta.github.io", "constantin.dinuta@gmail.com"))
                 .build();
     }

@@ -1,7 +1,7 @@
 package com.github.dinuta.estuary.agent.api;
 
 import com.github.dinuta.estuary.agent.api.utils.HttpRequestUtils;
-import com.github.dinuta.estuary.agent.constants.About;
+import com.github.dinuta.estuary.agent.component.About;
 import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
@@ -42,6 +42,9 @@ public class CommandParallelApiControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private About about;
+
     @ParameterizedTest
     @ValueSource(
             strings = {
@@ -62,9 +65,9 @@ public class CommandParallelApiControllerTest {
 
         this.assertSuccessCommandDescriptionFields(commandInfo, body.getDescription());
 
-        assertThat(body.getName()).isEqualTo(About.getAppName());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
         assertThat(body.getPath()).isEqualTo("/commandparallel?");
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 
@@ -98,8 +101,8 @@ public class CommandParallelApiControllerTest {
         assertThat(body.getDescription().getCommands().get(command2).getDetails().getCode()).isEqualTo(-1);
         assertThat(body.getDescription().getCommands().get(command2).getDuration()).isInstanceOf(Float.class);
 
-        assertThat(body.getName()).isEqualTo(About.getAppName());
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 
@@ -126,8 +129,8 @@ public class CommandParallelApiControllerTest {
         assertThat(body.getDescription().getCommands().get(command1).getDuration()).isInstanceOf(Float.class);
         assertThat(Math.round(body.getDescription().getCommands().get(command2).getDuration())).isEqualTo(Math.round(sleep2));
         assertThat(body.getDescription().getCommands().get(command2).getDuration()).isInstanceOf(Float.class);
-        assertThat(body.getName()).isEqualTo(About.getAppName());
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 
@@ -154,8 +157,8 @@ public class CommandParallelApiControllerTest {
         assertThat(body.getDescription().getCommands().get(command1).getDetails().getErr()).isEqualTo("");
         assertThat(body.getDescription().getCommands().get(command2).getDetails().getErr()).isNotEqualTo("");
 
-        assertThat(body.getName()).isEqualTo(About.getAppName());
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 
@@ -179,8 +182,8 @@ public class CommandParallelApiControllerTest {
 
         this.assertFailureCommandDescriptionFields(commandInfo, body.getDescription());
 
-        assertThat(body.getName()).isEqualTo(About.getAppName());
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 

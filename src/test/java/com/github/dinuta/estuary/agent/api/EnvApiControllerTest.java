@@ -1,8 +1,8 @@
 package com.github.dinuta.estuary.agent.api;
 
 import com.github.dinuta.estuary.agent.api.utils.HttpRequestUtils;
+import com.github.dinuta.estuary.agent.component.About;
 import com.github.dinuta.estuary.agent.component.VirtualEnvironment;
-import com.github.dinuta.estuary.agent.constants.About;
 import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
@@ -44,6 +44,9 @@ public class EnvApiControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private About about;
+
     @Test
     public void whenCallingGetThenInformationIsRetrivedOk() {
         ResponseEntity<ApiResponse> responseEntity =
@@ -56,9 +59,9 @@ public class EnvApiControllerTest {
         assertThat(body.getMessage()).isEqualTo(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()));
         assertThat(body.getDescription()).isInstanceOf(Map.class);
         assertThat(((Map) body.getDescription()).get("PATH")).isNotEqualTo("");
-        assertThat(body.getName()).isEqualTo(About.getAppName());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
         assertThat(body.getPath()).isEqualTo("/env?");
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 
@@ -75,8 +78,8 @@ public class EnvApiControllerTest {
         assertThat(body.getMessage()).isEqualTo(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()));
         assertThat(body.getDescription()).isInstanceOf(String.class);
         assertThat(body.getDescription()).isNotEqualTo("");
-        assertThat(body.getName()).isEqualTo(About.getAppName());
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 
@@ -97,8 +100,8 @@ public class EnvApiControllerTest {
                 String.format(ApiResponseMessage.getMessage(ApiResponseCode.SET_ENV_VAR_FAILURE.getCode()), envVars), envVars);
         assertThat(body.getDescription()).isInstanceOf(String.class);
         assertThat(body.getDescription().toString()).contains("Exception");
-        assertThat(body.getName()).isEqualTo(About.getAppName());
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 
@@ -114,8 +117,8 @@ public class EnvApiControllerTest {
         assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
         assertThat(body.getMessage()).isEqualTo(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()));
         assertThat(body.getDescription()).isEqualTo(null);
-        assertThat(body.getName()).isEqualTo(About.getAppName());
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 
@@ -140,8 +143,8 @@ public class EnvApiControllerTest {
         assertThat(body.getMessage()).isEqualTo(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()));
         assertThat(body.getDescription()).isInstanceOf(String.class);
         assertThat(body.getDescription()).isEqualTo(expectedValue);
-        assertThat(body.getName()).isEqualTo(About.getAppName());
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 
@@ -160,8 +163,8 @@ public class EnvApiControllerTest {
         assertThat(body.getMessage()).isEqualTo(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()));
         assertThat(body.getDescription()).isInstanceOf(String.class);
         assertThat(body.getDescription()).isNotEqualTo(notExpectedValue);
-        assertThat(body.getName()).isEqualTo(About.getAppName());
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 
@@ -189,8 +192,8 @@ public class EnvApiControllerTest {
         assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
         assertThat(body.getMessage()).isEqualTo(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()));
         assertThat(body.getDescription()).isInstanceOf(Map.class);
-        assertThat(body.getName()).isEqualTo(About.getAppName());
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
 
         responseEntity =
@@ -230,8 +233,8 @@ public class EnvApiControllerTest {
         assertThat(body.getMessage()).isEqualTo(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()));
         assertThat(body.getDescription()).isInstanceOf(Map.class);
         assertThat(((Map) body.getDescription()).size()).isEqualTo(1);
-        assertThat(body.getName()).isEqualTo(About.getAppName());
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
 
         responseEntity =

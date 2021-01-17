@@ -1,6 +1,6 @@
 package com.github.dinuta.estuary.agent.api;
 
-import com.github.dinuta.estuary.agent.constants.About;
+import com.github.dinuta.estuary.agent.component.About;
 import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
@@ -30,6 +30,9 @@ public class PingApiControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private About about;
+
     @Test
     public void whenCallingGetThenInformationIsRetrivedOk() {
         ResponseEntity<ApiResponse> responseEntity = this.restTemplate.getForEntity(SERVER_PREFIX + port + "/ping",
@@ -41,9 +44,9 @@ public class PingApiControllerTest {
         assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
         assertThat(body.getMessage()).isEqualTo(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()));
         assertThat(body.getDescription()).isEqualTo("pong");
-        assertThat(body.getName()).isEqualTo(About.getAppName());
+        assertThat(body.getName()).isEqualTo(about.getAppName());
         assertThat(body.getPath()).isEqualTo("/ping?");
-        assertThat(body.getVersion()).isEqualTo(About.getVersion());
+        assertThat(body.getVersion()).isEqualTo(about.getVersion());
         assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
     }
 }
