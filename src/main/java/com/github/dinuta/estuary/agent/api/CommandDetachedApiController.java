@@ -168,7 +168,7 @@ public class CommandDetachedApiController implements CommandDetachedApi {
             stateHolder.setLastCommand(id);
         } catch (IOException e) {
             throw new ApiException(ApiResponseCode.COMMAND_DETACHED_START_FAILURE.getCode(),
-                    ApiResponseMessage.getMessage(ApiResponseCode.COMMAND_DETACHED_START_FAILURE.getCode()));
+                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.COMMAND_DETACHED_START_FAILURE.getCode()), id));
         }
 
         return new ResponseEntity<>(ApiResponse.builder()
