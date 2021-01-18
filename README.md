@@ -65,7 +65,8 @@ endpoint as per example found bellow.
 Please download the execs from here:
 
 - [Windows](https://estuary-agent-go.s3.eu-central-1.amazonaws.com/4.1.0/runcmd.exe)
-- [Linux](https://estuary-agent-go.s3.eu-central-1.amazonaws.com/4.1.0/runcmd)
+- [Linux](https://estuary-agent-go.s3.eu-central-1.amazonaws.com/4.1.0/runcmd-linux)
+- [Alpine](https://estuary-agent-go.s3.eu-central-1.amazonaws.com/4.1.0/runcmd-alpine)
 
 Place the platform-specific binary under the same folder from where the service started. The exec must have its name
 as **runcmd**. E.g runcmd.exe (Windows) / runcmd (Linux)
