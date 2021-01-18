@@ -46,24 +46,40 @@ Integration of the library in a new custom microservice is shown [in wiki](https
 ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/com.github.dinuta.estuary/agent?server=https%3A%2F%2Foss.sonatype.org)
 
 ## Build status
+
 [![CircleCI](https://circleci.com/gh/dinuta/estuary-agent-java.svg?style=svg&circle-token=2036f4d0e07fadce8101e00e790970fcfb43e03f)](https://circleci.com/gh/dinuta/estuary-agent-java)
 
 ## Code quality
+
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/3a410087fa10428e89e925134c4e3988)](https://www.codacy.com/gh/dinuta/estuary-agent-java/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dinuta/estuary-agent-java&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/0f8230850df65ed9840f/maintainability)](https://codeclimate.com/github/dinuta/estuary-agent-java/maintainability)
 
 ## Postman collection
-[API collection](https://documenter.getpostman.com/view/2360061/SVYrrdGe)  
-For /commanddetached endpoint **start.py** binary is needed. Please download the zip compiled for all platforms from [here](https://estuary-agent.s3.eu-central-1.amazonaws.com/4.0.8/start.zip).  
-Place one platform-specific binary under the same folder from where the service is started and rename it in **start.py**.  
-  
+
+[API collection](https://documenter.getpostman.com/view/2360061/SVYrrdGe)
+
+## Commands in background
+
+For /commanddetached endpoint **runcmd** binary is needed. The binary implements the same object as **/command**
+endpoint as per example found bellow.    
+Please download the execs from here:
+
+- [Windows](https://estuary-agent-go.s3.eu-central-1.amazonaws.com/4.1.0/runcmd.exe)
+- [Linux](https://estuary-agent-go.s3.eu-central-1.amazonaws.com/4.1.0/runcmd-linux)
+- [Alpine](https://estuary-agent-go.s3.eu-central-1.amazonaws.com/4.1.0/runcmd-alpine)
+
+Place the platform-specific binary under the same folder from where the service started. The exec must have its name
+as **runcmd**. E.g runcmd.exe (Windows) / runcmd (Linux)
 
 ## Eureka client registration
-Set the following env vars:  
--   APP_IP -> the ip which this service binds to
--   PORT  -> the port which this service binds to
 
-Example:  
+Set the following env vars:
+
+- APP_IP -> the ip which this service binds to
+- PORT -> the port which this service binds to
+
+Example:
+
  ```bash
 export APP_IP=192.168.0.4
 export PORT=8081

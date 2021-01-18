@@ -8,6 +8,7 @@ import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
 import com.github.dinuta.estuary.agent.exception.ApiException;
+import com.github.dinuta.estuary.agent.model.StateHolder;
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
 import com.github.dinuta.estuary.agent.model.api.CommandDescription;
 import io.swagger.annotations.Api;
@@ -54,6 +55,9 @@ public class CommandDetachedApiController implements CommandDetachedApi {
     private About about;
 
     @Autowired
+    private StateHolder stateHolder;
+
+    @Autowired
     public CommandDetachedApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
         this.request = request;
@@ -74,9 +78,8 @@ public class CommandDetachedApiController implements CommandDetachedApi {
 
     public ResponseEntity<ApiResponse> commandDetachedGet(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
         String accept = request.getHeader("Accept");
-        String testInfoName = "command_detached_info.json";
-        String testInfoFilename = new File(".").getAbsolutePath() + "/" + testInfoName;
-        log.debug(testInfoName + " Path: " + testInfoFilename);
+        String testInfoFilename = stateHolder.getLastCommand();
+        log.debug("Reading from path: " + testInfoFilename);
 
         File testInfo = new File(testInfoFilename);
         CommandDescription commandDescription = new CommandDescription();
@@ -84,16 +87,41 @@ public class CommandDetachedApiController implements CommandDetachedApi {
             if (!testInfo.exists())
                 writeContentInFile(testInfo, commandDescription);
         } catch (IOException e) {
-            throw new ApiException(ApiResponseCode.GET_TEST_INFO_FAILURE.getCode(),
-                    ApiResponseMessage.getMessage(ApiResponseCode.GET_TEST_INFO_FAILURE.getCode()));
+            throw new ApiException(ApiResponseCode.GET_COMMAND_DETACHED_INFO_FAILURE.getCode(),
+                    ApiResponseMessage.getMessage(ApiResponseCode.GET_COMMAND_DETACHED_INFO_FAILURE.getCode()));
         }
 
         try (InputStream inputStream = new FileInputStream(testInfo)) {
             String fileContent = IOUtils.toString(inputStream, "UTF-8");
             commandDescription = objectMapper.readValue(fileContent, CommandDescription.class);
         } catch (IOException e) {
-            throw new ApiException(ApiResponseCode.GET_TEST_INFO_FAILURE.getCode(),
-                    ApiResponseMessage.getMessage(ApiResponseCode.GET_TEST_INFO_FAILURE.getCode()));
+            throw new ApiException(ApiResponseCode.GET_COMMAND_DETACHED_INFO_FAILURE.getCode(),
+                    ApiResponseMessage.getMessage(ApiResponseCode.GET_COMMAND_DETACHED_INFO_FAILURE.getCode()));
+        }
+
+        return new ResponseEntity<>(ApiResponse.builder()
+                .code(ApiResponseCode.SUCCESS.getCode())
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
+                .description(commandDescription)
+                .name(about.getAppName())
+                .version(about.getVersion())
+                .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
+                .path(clientRequest.getRequestUri())
+                .build(), HttpStatus.OK);
+    }
+
+    public ResponseEntity<ApiResponse> commandDetachedIdGet(@ApiParam(value = "Command detached id set by the user", required = true) @PathVariable("id") String id, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+        String accept = request.getHeader("Accept");
+        String testInfoFilename = String.format(stateHolder.getLastCommandFormat(), id);
+        log.debug("Reading content from file: " + testInfoFilename);
+
+        CommandDescription commandDescription;
+        try (InputStream is = new FileInputStream(testInfoFilename)) {
+            String fileContent = IOUtils.toString(is, "UTF-8");
+            commandDescription = objectMapper.readValue(fileContent, CommandDescription.class);
+        } catch (IOException e) {
+            throw new ApiException(ApiResponseCode.GET_COMMAND_DETACHED_INFO_FAILURE.getCode(),
+                    ApiResponseMessage.getMessage(ApiResponseCode.GET_COMMAND_DETACHED_INFO_FAILURE.getCode()));
         }
 
         return new ResponseEntity<>(ApiResponse.builder()
@@ -109,8 +137,8 @@ public class CommandDetachedApiController implements CommandDetachedApi {
 
     public ResponseEntity<ApiResponse> commandDetachedIdPost(@ApiParam(value = "Command detached id set by the user", required = true) @PathVariable("id") String id, @ApiParam(value = "List of commands to run one after the other. E.g. make/mvn/sh/npm", required = true) @Valid @RequestBody String commandContent, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
         String accept = request.getHeader("Accept");
-        String testInfoFilename = new File(".").getAbsolutePath() + "/command_detached_info.json";
-        File testInfo = new File(testInfoFilename);
+
+        File testInfo = new File(String.format(stateHolder.getLastCommandFormat(), id));
         CommandDescription commandDescription = CommandDescription.builder()
                 .started(true)
                 .finished(false)
@@ -130,15 +158,17 @@ public class CommandDetachedApiController implements CommandDetachedApi {
                     .stream().map(elem -> elem.stripLeading().stripTrailing()).collect(Collectors.toList());
             log.debug("Executing commands: " + commandsList.toString());
 
-            List<String> startPyArgumentsList = new ArrayList<>();
-            startPyArgumentsList.add(id);
-            startPyArgumentsList.add(String.join(";", commandsList.toArray(new String[0])));
+            List<String> argumentsList = new ArrayList<>();
+            argumentsList.add("--cid=" + id);
+            argumentsList.add("--enableStreams=false");
+            argumentsList.add("--args=\"" + String.join(";;", commandsList.toArray(new String[0])) + "\"");
 
-            log.debug("Sending args: " + startPyArgumentsList.toString());
-            commandRunner.runStartCommandDetached(startPyArgumentsList);
+            log.debug("Sending args: " + argumentsList.toString());
+            commandRunner.runStartCommandInBackground(argumentsList);
+            stateHolder.setLastCommand(id);
         } catch (IOException e) {
             throw new ApiException(ApiResponseCode.COMMAND_DETACHED_START_FAILURE.getCode(),
-                    ApiResponseMessage.getMessage(ApiResponseCode.COMMAND_DETACHED_START_FAILURE.getCode()));
+                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.COMMAND_DETACHED_START_FAILURE.getCode()), id));
         }
 
         return new ResponseEntity<>(ApiResponse.builder()
