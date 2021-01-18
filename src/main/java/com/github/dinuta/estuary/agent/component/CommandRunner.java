@@ -8,7 +8,6 @@ import com.github.dinuta.estuary.agent.model.api.CommandParallel;
 import com.github.dinuta.estuary.agent.model.api.CommandStatus;
 import com.github.dinuta.estuary.agent.utils.CommandStatusThread;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,7 +93,6 @@ public class CommandRunner {
                 .pid(ProcessHandle.current().pid())
                 .build();
 
-
         for (String cmd : commands) {
             CommandStatus commandStatus = new CommandStatus();
             commandStatus.setStartedat(LocalDateTime.now().format(DateTimeConstants.PATTERN));
@@ -127,25 +125,19 @@ public class CommandRunner {
      * @return A reference to a Future of {@link ProcessResult}
      * @throws IOException if the process could not be started
      */
-    public Future<ProcessResult> runStartCommandDetached(List<String> command) throws IOException {
-        String pythonExec = "start.py";
+    public Future<ProcessResult> runStartCommandInBackground(List<String> command) throws IOException {
+        String exec = "runcmd";
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
         ArrayList<String> fullCmd = getPlatformCommand();
-        String commandsSeparatedBySemicolon = "";
-
-        for (int i = 1; i < command.size(); i++) {
-            commandsSeparatedBySemicolon += command.get(i) + ";";
-        }
 
         if (isWindows) {
-            fullCmd.add(String.format("%s/%s", Paths.get("").toAbsolutePath().toString(), pythonExec));
-            fullCmd.add(this.doQuoteCmd(command.get(0)) + " " +
-                    this.doQuoteCmd(StringUtils.stripEnd(commandsSeparatedBySemicolon, ";")));
+            fullCmd.add(String.format("%s\\%s %s %s %s",
+                    Paths.get("").toAbsolutePath().toString(), exec,
+                    command.get(0), command.get(1), command.get(2)));
         } else {
             fullCmd.add(
-                    this.doQuoteCmd(String.format("%s/%s", Paths.get("").toAbsolutePath().toString(), pythonExec)) + " " +
-                            this.doQuoteCmd(command.get(0)) + " " +
-                            this.doQuoteCmd(StringUtils.stripEnd(commandsSeparatedBySemicolon, ";")));
+                    this.doQuoteCmd(String.format("%s/%s", Paths.get("").toAbsolutePath().toString(), exec)) + " " +
+                            command.get(0) + " " + command.get(1) + " " + command.get(2));
         }
 
         return this.runStartCmdDetached(fullCmd.toArray(new String[0])).start().getFuture();
@@ -183,7 +175,6 @@ public class CommandRunner {
                 .finished(false)
                 .pid(ProcessHandle.current().pid())
                 .build();
-
 
         for (int i = 0; i < commands.length; i++) {
             commandStatuses.add(new CommandStatus());
@@ -223,11 +214,11 @@ public class CommandRunner {
      * @return The command details of the command executed
      */
     public CommandDetails getCmdDetailsOfProcess(String[] command, ProcessState processState) {
+        CommandDetails commandDetails;
         InputStream inputStream = InputStream.nullInputStream();
         int timeout = environment.getEnvAndVirtualEnv().get(COMMAND_TIMEOUT) != null ?
                 Integer.parseInt(environment.getEnvAndVirtualEnv().get(COMMAND_TIMEOUT)) : COMMAND_TIMEOUT_DEFAULT;
 
-        CommandDetails commandDetails;
         try {
             ProcessResult processResult = processState.getProcessResult().get(timeout, TimeUnit.SECONDS);
 
@@ -243,7 +234,6 @@ public class CommandRunner {
                     .pid(processState.getProcess().pid())
                     .args(command)
                     .build();
-
         } catch (TimeoutException e) {
             log.debug(ExceptionUtils.getStackTrace(e));
             commandDetails = CommandDetails.builder()
@@ -272,18 +262,18 @@ public class CommandRunner {
 
     private ArrayList<String> getPlatformCommand() {
         boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
-        ArrayList<String> fullCommand = new ArrayList<>();
+        ArrayList<String> platformCmd = new ArrayList<>();
 
         if (isWindows) {
-            fullCommand.add(EXEC_WIN);
-            fullCommand.add(ARGS_WIN);
+            platformCmd.add(EXEC_WIN);
+            platformCmd.add(ARGS_WIN);
         } else {
-            fullCommand.add(EXEC_LINUX);
-            fullCommand.add(ARGS_LINUX);
+            platformCmd.add(EXEC_LINUX);
+            platformCmd.add(ARGS_LINUX);
 
         }
 
-        return fullCommand;
+        return platformCmd;
     }
 
     private ProcessExecutor runStartCmdDetached(String[] command) {
