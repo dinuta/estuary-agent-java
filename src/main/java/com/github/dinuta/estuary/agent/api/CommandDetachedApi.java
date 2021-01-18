@@ -38,6 +38,17 @@ public interface CommandDetachedApi {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    @ApiOperation(value = "Gets information about the command identified by id started in detached mode", nickname = "commandDetachedIdGet", notes = "", response = ApiResponse.class, tags = {"estuary-agent",})
+    @ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "Get command detached info success", response = ApiResponse.class),
+            @io.swagger.annotations.ApiResponse(code = 500, message = "Get command detached info failure", response = ApiResponse.class)})
+    @RequestMapping(value = "/commanddetached/{id}",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    default ResponseEntity<ApiResponse> commandDetachedIdGet(@ApiParam(value = "Command detached id set by the user", required = true) @PathVariable("id") String id, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
     @ApiOperation(value = "Starts the shell commands in detached mode and sequentially", nickname = "commandDetachedIdPost", notes = "", response = ApiResponse.class, tags = {"estuary-agent",})
     @ApiResponses(value = {
             @io.swagger.annotations.ApiResponse(code = 200, message = "commands start success", response = ApiResponse.class),
