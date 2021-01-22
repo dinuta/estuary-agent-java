@@ -22,10 +22,10 @@ With the help of the agent the user can also do IO operations:
 This code acts both as a microservice as well as a library:
 
 a) Standalone microservice jar with the
-extension: [exec.jar](https://search.maven.org/artifact/com.github.dinuta.estuary/agent/4.1.0/jar)
+extension: [exec.jar](https://search.maven.org/artifact/com.github.dinuta.estuary/agent/4.1.1/jar)
 
 ```bash
-java -jar agent-4.1.0-exec.jar
+java -jar agent-4.1.1-exec.jar
 ```
 
 b) Library as a Maven dependency:
@@ -33,7 +33,7 @@ b) Library as a Maven dependency:
 <dependency>
     <groupId>com.github.dinuta.estuary</groupId>
     <artifactId>agent</artifactId>
-    <version>4.1.0</version>
+    <version>4.1.1</version>
 </dependency>
 ```
 
@@ -42,7 +42,7 @@ Integration of the library in a new custom microservice is shown [in wiki](https
 
 ## Artifact
 
-![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/com.github.dinuta.estuary/agent/4.1.0)
+![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/com.github.dinuta.estuary/agent/4.1.1)
 ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/com.github.dinuta.estuary/agent?server=https%3A%2F%2Foss.sonatype.org)
 
 ## Build status
@@ -85,7 +85,7 @@ export APP_IP=192.168.0.4
 export PORT=8081
 java -jar \
 -Deureka.client.serviceUrl.defaultZone=http://192.168.0.100:8080/eureka/v2 \
--Deureka.client.enabled=true agent-4.1.0-SNAPSHOT-exec.jar 
+-Deureka.client.enabled=true agent-4.1.1-SNAPSHOT-exec.jar 
 ```
 
 ## Fluentd logging
@@ -164,7 +164,7 @@ Get this dependency:
 <dependency>
     <groupId>com.github.dinuta.estuary</groupId>
     <artifactId>agent</artifactId>
-    <version>4.1.0</version>
+    <version>4.1.1</version>
 </dependency>
 ```
 ## Maven devendency snapshot
@@ -172,7 +172,7 @@ Get this dependency:
 <dependency>
     <groupId>com.github.dinuta.estuary</groupId>
     <artifactId>agent</artifactId>
-    <version>4.1.0-SNAPSHOT</version>
+    <version>4.1.2-SNAPSHOT</version>
 </dependency>
 ```
 For using a snapshot version, set the oss.sonatype.org repo in settings.xml:
