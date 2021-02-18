@@ -37,8 +37,6 @@ public class SwaggerDocumentationConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.github.dinuta.estuary.agent.api"))
                 .build()
-                .directModelSubstitute(org.threeten.bp.LocalDate.class, java.sql.Date.class)
-                .directModelSubstitute(org.threeten.bp.OffsetDateTime.class, java.util.Date.class)
                 .apiInfo(apiInfo());
     }
 

@@ -3,6 +3,7 @@ package com.github.dinuta.estuary.agent.api;
 import com.github.dinuta.estuary.agent.api.constants.HeaderConstants;
 import com.github.dinuta.estuary.agent.api.utils.HttpRequestUtils;
 import com.github.dinuta.estuary.agent.component.About;
+import com.github.dinuta.estuary.agent.component.Authentication;
 import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
@@ -41,6 +42,9 @@ public class XRequestIdTest {
     @Autowired
     private About about;
 
+    @Autowired
+    private Authentication auth;
+
     @Test
     public void whenCallingWithXIdSetFromClientThenTheServersReturnsItBack() {
         String xReqId = "my-provided-value";
@@ -48,7 +52,7 @@ public class XRequestIdTest {
         headers.put(HeaderConstants.X_REQUEST_ID, xReqId);
 
         ResponseEntity<ApiResponse> responseEntity =
-                this.restTemplate
+                this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
                         .exchange(SERVER_PREFIX + port + "/about",
                                 HttpMethod.GET,
                                 httpRequestUtils.getRequestEntityContentTypeAppJson(null, headers),
@@ -71,7 +75,7 @@ public class XRequestIdTest {
         Map<String, String> headers = new HashMap<>();
 
         ResponseEntity<ApiResponse> responseEntity =
-                this.restTemplate
+                this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
                         .exchange(SERVER_PREFIX + port + "/about",
                                 HttpMethod.GET,
                                 httpRequestUtils.getRequestEntityContentTypeAppJson(null, headers),

@@ -22,7 +22,7 @@ public interface FolderApi {
     @RequestMapping(value = "/folder",
             produces = {"application/zip", "application/json"},
             method = RequestMethod.GET)
-    default ResponseEntity<? extends Object> folderGet(@ApiParam(value = "Target folder path to get as zip", required = false) @RequestHeader(value = "Folder-Path", required = false) String folderPath, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+    default ResponseEntity<? extends Object> folderGet(@ApiParam(value = "Target folder path to get as zip", required = false) @RequestHeader(value = "Folder-Path", required = false) String folderPath) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 

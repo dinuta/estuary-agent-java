@@ -3,6 +3,7 @@ package com.github.dinuta.estuary.agent.api;
 import com.github.dinuta.estuary.agent.api.constants.HeaderConstants;
 import com.github.dinuta.estuary.agent.api.utils.HttpRequestUtils;
 import com.github.dinuta.estuary.agent.component.About;
+import com.github.dinuta.estuary.agent.component.Authentication;
 import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
@@ -41,13 +42,16 @@ public class FileApiControllerTest {
     @Autowired
     private About about;
 
+    @Autowired
+    private Authentication auth;
+
     @Test
     public void whenCallingGetThenInformationIsRetrivedOk() {
         Map<String, String> headers = new HashMap<>();
         headers.put(HeaderConstants.FILE_PATH, "README.md");
 
         ResponseEntity<String> responseEntity =
-                this.restTemplate
+                this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
                         .exchange(SERVER_PREFIX + port + "/file",
                                 HttpMethod.GET,
                                 httpRequestUtils.getRequestEntityContentTypeAppJson(null, headers),
@@ -64,7 +68,7 @@ public class FileApiControllerTest {
         Map<String, String> headers = new HashMap<>();
 
         ResponseEntity<ApiResponse> responseEntity =
-                this.restTemplate
+                this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
                         .exchange(SERVER_PREFIX + port + "/file",
                                 HttpMethod.GET,
                                 httpRequestUtils.getRequestEntityContentTypeAppJson(null, headers),
@@ -89,7 +93,7 @@ public class FileApiControllerTest {
         headers.put(HeaderConstants.FILE_PATH, "whateverinvalid");
 
         ResponseEntity<ApiResponse> responseEntity =
-                this.restTemplate
+                this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
                         .exchange(SERVER_PREFIX + port + "/file",
                                 HttpMethod.GET,
                                 httpRequestUtils.getRequestEntityContentTypeAppJson(null, headers),
@@ -113,7 +117,7 @@ public class FileApiControllerTest {
         headers.put(HeaderConstants.FILE_PATH, "whateverinvalid/a/imlazytoday/lazy.txt");
 
         ResponseEntity<ApiResponse> responseEntity =
-                this.restTemplate
+                this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
                         .exchange(SERVER_PREFIX + port + "/file",
                                 HttpMethod.PUT,
                                 httpRequestUtils.getRequestEntityContentTypeAppJson("doesnotmatter", headers),
@@ -137,7 +141,7 @@ public class FileApiControllerTest {
         headers.put(HeaderConstants.FILE_PATH, "config.properties");
 
         ResponseEntity<ApiResponse> responseEntity =
-                this.restTemplate
+                this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
                         .exchange(SERVER_PREFIX + port + "/file",
                                 HttpMethod.PUT,
                                 httpRequestUtils.getRequestEntityContentTypeAppJson("{\"ip\": \"localhost\"}", headers),
@@ -163,7 +167,7 @@ public class FileApiControllerTest {
         headers.put(HeaderConstants.FILE_PATH, "myEmptyFile.txt");
 
         ResponseEntity<ApiResponse> responseEntity =
-                this.restTemplate
+                this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
                         .exchange(SERVER_PREFIX + port + "/file",
                                 HttpMethod.POST,
                                 httpRequestUtils.getRequestEntityContentTypeAppJson(null, headers),

@@ -2,6 +2,7 @@ package com.github.dinuta.estuary.agent.api;
 
 import com.github.dinuta.estuary.agent.api.utils.HttpRequestUtils;
 import com.github.dinuta.estuary.agent.component.About;
+import com.github.dinuta.estuary.agent.component.Authentication;
 import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
@@ -54,6 +55,9 @@ public class CommandDetachedApiControllerTest {
     @Autowired
     private About about;
 
+    @Autowired
+    private Authentication auth;
+
     @ParameterizedTest
     @ValueSource(
             strings = {
@@ -96,7 +100,7 @@ public class CommandDetachedApiControllerTest {
         String command = command1 + "\n" + command2;
         Map<String, String> headers = new HashMap<>();
 
-        ResponseEntity<ApiResponse<String>> responseEntity = this.restTemplate
+        ResponseEntity<ApiResponse<String>> responseEntity = this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
                 .exchange(SERVER_PREFIX + port + "/commanddetached/" + testId,
                         HttpMethod.POST,
                         httpRequestUtils.getRequestEntityJsonContentTypeAppText(command, headers),
@@ -179,7 +183,7 @@ public class CommandDetachedApiControllerTest {
     private ResponseEntity<ApiResponse<CommandDescription>> getApiResponseCommandDescriptionEntityForId(String id) {
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, MediaType.TEXT_PLAIN.toString());
-        return this.restTemplate
+        return this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
                 .exchange(SERVER_PREFIX + port + "/commanddetached/" + id,
                         HttpMethod.GET,
                         httpRequestUtils.getRequestEntityContentTypeAppJson(null, headers),
@@ -190,7 +194,7 @@ public class CommandDetachedApiControllerTest {
     private ResponseEntity<ApiResponse<String>> postApiResponseCommandDescriptionEntity(String command, String id) {
         Map<String, String> headers = new HashMap<>();
 
-        return this.restTemplate
+        return this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
                 .exchange(SERVER_PREFIX + port + "/commanddetached/" + id,
                         HttpMethod.POST,
                         httpRequestUtils.getRequestEntityContentTypeAppJson(command, headers),
@@ -214,7 +218,7 @@ public class CommandDetachedApiControllerTest {
     private ResponseEntity<ApiResponse<CommandDescription>> getApiResponseCommandDescriptionResponseEntity() {
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, MediaType.TEXT_PLAIN.toString());
-        return this.restTemplate
+        return this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
                 .exchange(SERVER_PREFIX + port + "/commanddetached",
                         HttpMethod.GET,
                         httpRequestUtils.getRequestEntityContentTypeAppJson(null, headers),
@@ -225,7 +229,7 @@ public class CommandDetachedApiControllerTest {
     private ResponseEntity<ApiResponse> postApiResponseCommandDescriptionResponseEntity(String command, String id) {
         Map<String, String> headers = new HashMap<>();
 
-        return this.restTemplate
+        return this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
                 .exchange(SERVER_PREFIX + port + "/commanddetached/" + id,
                         HttpMethod.POST,
                         httpRequestUtils.getRequestEntityContentTypeAppJson(command, headers),

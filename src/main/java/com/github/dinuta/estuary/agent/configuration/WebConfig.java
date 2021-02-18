@@ -1,4 +1,4 @@
-package com.github.dinuta.estuary.agent.config;
+package com.github.dinuta.estuary.agent.configuration;
 
 import com.github.dinuta.estuary.agent.handler.CustomRequestInterceptorAdapter;
 import org.springframework.beans.factory.annotation.Autowired;

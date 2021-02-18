@@ -9,14 +9,12 @@ import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
 import com.github.dinuta.estuary.agent.utils.SystemInformation;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -43,7 +41,7 @@ public class AboutApiController implements AboutApi {
         this.request = request;
     }
 
-    public ResponseEntity<ApiResponse> aboutGet(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+    public ResponseEntity<ApiResponse> aboutGet() {
         String accept = request.getHeader("Accept");
 
         return new ResponseEntity<>(ApiResponse.builder()

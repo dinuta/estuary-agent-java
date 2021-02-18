@@ -1,5 +1,6 @@
 package com.github.dinuta.estuary.agent.api;
 
+import com.github.dinuta.estuary.agent.component.Authentication;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,12 @@ public class HomeControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private Authentication auth;
+
     @Test
     public void whenCallingRootUrlThenInformationIsFound() {
-        ResponseEntity<String> responseEntity = this.restTemplate
+        ResponseEntity<String> responseEntity = this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
                 .getForEntity(SERVER_PREFIX + port + "/",
                         String.class);
 
@@ -36,7 +40,7 @@ public class HomeControllerTest {
 
     @Test
     public void whenCallingSwaggerUiThenInformationIsRetrivedOk() {
-        ResponseEntity<String> responseEntity = this.restTemplate
+        ResponseEntity<String> responseEntity = this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
                 .getForEntity(SERVER_PREFIX + port + "/swagger-ui/",
                         String.class);
 
@@ -49,14 +53,14 @@ public class HomeControllerTest {
 
     @Test
     public void whenCallingApiDocsThenInformationIsRetrivedOk() {
-        ResponseEntity<Map> responseEntity = this.restTemplate
+        ResponseEntity<Map> responseEntity = this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
                 .getForEntity(SERVER_PREFIX + port + "/apidocs",
                         Map.class);
         Map body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
         assertThat(body.get("swagger")).isEqualTo("2.0");
-        assertThat(((Map) body.get("paths")).size()).isEqualTo(10);
+        assertThat(((Map) body.get("paths")).size()).isEqualTo(11);
     }
 
 }
