@@ -23,7 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -63,7 +62,7 @@ public class CommandDetachedApiController implements CommandDetachedApi {
         this.request = request;
     }
 
-    public ResponseEntity<ApiResponse> commandDetachedDelete(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+    public ResponseEntity<ApiResponse> commandDetachedDelete() {
         String accept = request.getHeader("Accept");
         return new ResponseEntity<>(ApiResponse.builder()
                 .code(ApiResponseCode.NOT_IMPLEMENTED.getCode())
@@ -76,7 +75,7 @@ public class CommandDetachedApiController implements CommandDetachedApi {
                 .build(), HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<ApiResponse> commandDetachedGet(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+    public ResponseEntity<ApiResponse> commandDetachedGet() {
         String accept = request.getHeader("Accept");
         String testInfoFilename = stateHolder.getLastCommand();
         log.debug("Reading from path: " + testInfoFilename);
@@ -110,7 +109,7 @@ public class CommandDetachedApiController implements CommandDetachedApi {
                 .build(), HttpStatus.OK);
     }
 
-    public ResponseEntity<ApiResponse> commandDetachedIdGet(@ApiParam(value = "Command detached id set by the user", required = true) @PathVariable("id") String id, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+    public ResponseEntity<ApiResponse> commandDetachedIdGet(@ApiParam(value = "Command detached id set by the user", required = true) @PathVariable("id") String id) {
         String accept = request.getHeader("Accept");
         String testInfoFilename = String.format(stateHolder.getLastCommandFormat(), id);
         log.debug("Reading content from file: " + testInfoFilename);
@@ -135,7 +134,7 @@ public class CommandDetachedApiController implements CommandDetachedApi {
                 .build(), HttpStatus.OK);
     }
 
-    public ResponseEntity<ApiResponse> commandDetachedIdPost(@ApiParam(value = "Command detached id set by the user", required = true) @PathVariable("id") String id, @ApiParam(value = "List of commands to run one after the other. E.g. make/mvn/sh/npm", required = true) @Valid @RequestBody String commandContent, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+    public ResponseEntity<ApiResponse> commandDetachedIdPost(@ApiParam(value = "Command detached id set by the user", required = true) @PathVariable("id") String id, @ApiParam(value = "List of commands to run one after the other. E.g. make/mvn/sh/npm", required = true) @Valid @RequestBody String commandContent) {
         String accept = request.getHeader("Accept");
 
         File testInfo = new File(String.format(stateHolder.getLastCommandFormat(), id));

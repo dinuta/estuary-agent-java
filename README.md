@@ -89,19 +89,32 @@ java -jar \
 ```
 
 ## Fluentd logging
--   FLUENTD_IP_PORT  -> This env var sets the fluentd ip:port connection. Example: localhost:24224  
 
-## Token Authentication
--   HTTP_AUTH_TOKEN -> This env var sets the auth token for the service. Will be matched with the header 'Token'
+- FLUENTD_IP_PORT -> This env var sets the fluentd ip:port connection. Example: localhost:24224
+
+## Authentication
+
+- HTTP_AUTH_USER
+- HTTP_AUTH_PASSWORD
+
+These env vars will be matched against basic authentication from your HttpClient.  
+After user auth, set the received cookie (JSESSIONID) to communicate further with the agent.  
+The same settings can be set through application properties: **app.user** & **app.password**.  
+The env vars precedence is higher than the one set through the application properties.
 
 ## Command timeout
--   COMMAND_TIMEOUT -> This env var sets the command timeout for the system commands. Default is **1800** seconds.  
+
+- COMMAND_TIMEOUT -> This env var sets the command timeout for the system commands. Default is **1800** seconds.
 
 ## Environment variables injection
-User defined environment variables will be stored in a 'virtual' environment. The extra env vars will be used by the process that executes system commands.  
-There are two ways to inject user defined environment variables.    
--   call POST on **/env** endpoint. The body will contain the env vars in JSON format. E.g. {"FOO1":"BAR1"}  
--   create an **environment.properties** file with the extra env vars needed and place it in the same path as the JAR. Example in this repo.  
+
+User defined environment variables will be stored in a 'virtual' environment. The extra env vars will be used by the
+process that executes system commands.  
+There are two ways to inject user defined environment variables.
+
+- call POST on **/env** endpoint. The body will contain the env vars in JSON format. E.g. {"FOO1":"BAR1"}
+- create an **environment.properties** file with the extra env vars needed and place it in the same path as the JAR.
+  Example in this repo.
 
 *! All environment variables described above can also be set using **environment.properties**. However, the vars set through **application.yml** can't be set: PORT, APP_IP, EUREKA_SERVER.*
 

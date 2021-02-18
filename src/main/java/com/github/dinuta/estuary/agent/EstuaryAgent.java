@@ -22,12 +22,11 @@ import java.io.File;
 @ComponentScan(basePackages = {
         "com.github.dinuta.estuary.agent",
         "com.github.dinuta.estuary.agent.api",
-        "com.github.dinuta.estuary.agent.config",
         "com.github.dinuta.estuary.agent.configuration",
         "com.github.dinuta.estuary.agent.component",
         "com.github.dinuta.estuary.agent.handler"
 })
-public class TestAgentSpringBoot implements CommandLineRunner {
+public class EstuaryAgent implements CommandLineRunner {
     @Autowired
     private FluentdService fluentdService;
 
@@ -35,7 +34,7 @@ public class TestAgentSpringBoot implements CommandLineRunner {
     private VirtualEnvironment environment;
 
     public static void main(String[] args) {
-        new SpringApplication(TestAgentSpringBoot.class).run(args);
+        new SpringApplication(EstuaryAgent.class).run(args);
     }
 
     @Override

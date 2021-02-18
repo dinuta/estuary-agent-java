@@ -7,7 +7,10 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 
@@ -22,7 +25,7 @@ public interface EnvApi {
     @RequestMapping(value = "/env/{env_name}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    default ResponseEntity<ApiResponse> envEnvNameGet(@ApiParam(value = "The name of the env var to get value from", required = true) @PathVariable("env_name") String envName, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+    default ResponseEntity<ApiResponse> envEnvNameGet(@ApiParam(value = "The name of the env var to get value from", required = true) @PathVariable("env_name") String envName) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -33,7 +36,7 @@ public interface EnvApi {
     @RequestMapping(value = "/env",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    default ResponseEntity<ApiResponse> envGet(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+    default ResponseEntity<ApiResponse> envGet() {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -43,7 +46,7 @@ public interface EnvApi {
     @RequestMapping(value = "/env",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    default ResponseEntity<ApiResponse> envDelete(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+    default ResponseEntity<ApiResponse> envDelete() {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -54,7 +57,7 @@ public interface EnvApi {
     @RequestMapping(value = "/env",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    default ResponseEntity<ApiResponse> envPost(@ApiParam(value = "List of env vars by key-value pair in JSON format", required = true) @Valid @RequestBody String envVars, @ApiParam(value = "{\"FOO1\":\"BAR1\"}") @RequestHeader(value = "Token", required = false) String token) {
+    default ResponseEntity<ApiResponse> envPost(@ApiParam(value = "List of env vars by key-value pair in JSON format", required = true) @Valid @RequestBody String envVars) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 

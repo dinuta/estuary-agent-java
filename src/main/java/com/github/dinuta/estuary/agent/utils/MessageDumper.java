@@ -1,7 +1,6 @@
 package com.github.dinuta.estuary.agent.utils;
 
 import com.github.dinuta.estuary.agent.model.logging.ParentMessage;
-import org.apache.catalina.connector.RequestFacade;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -18,12 +17,12 @@ public class MessageDumper {
         ParentMessage parentMessage = new ParentMessage();
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         HashMap<String, Object> body = new HashMap<>();
-        Enumeration<String> headerNames = ((RequestFacade) request).getHeaderNames();
+        Enumeration<String> headerNames = ((HttpServletRequest) request).getHeaderNames();
         for (String headerName : Collections.list(headerNames)) {
-            headers.put(headerName, ((RequestFacade) request).getHeader(headerName));
+            headers.put(headerName, ((HttpServletRequest) request).getHeader(headerName));
         }
 
-        headers.put(REQUEST_URI, ((RequestFacade) request).getRequestURI());
+        headers.put(REQUEST_URI, ((HttpServletRequest) request).getRequestURI());
         body.put(MESSAGE, request.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
 
         parentMessage.setHeaders(headers);

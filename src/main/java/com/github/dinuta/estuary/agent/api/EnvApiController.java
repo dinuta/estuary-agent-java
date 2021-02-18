@@ -20,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -51,7 +50,7 @@ public class EnvApiController implements EnvApi {
         this.request = request;
     }
 
-    public ResponseEntity<ApiResponse> envEnvNameGet(@ApiParam(value = "The name of the env var to get value from", required = true) @PathVariable("env_name") String envName, @ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+    public ResponseEntity<ApiResponse> envEnvNameGet(@ApiParam(value = "The name of the env var to get value from", required = true) @PathVariable("env_name") String envName) {
         String accept = request.getHeader("Accept");
 
         return new ResponseEntity<>(ApiResponse.builder()
@@ -65,7 +64,7 @@ public class EnvApiController implements EnvApi {
                 .build(), HttpStatus.OK);
     }
 
-    public ResponseEntity<ApiResponse> envGet(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+    public ResponseEntity<ApiResponse> envGet() {
         String accept = request.getHeader("Accept");
 
         return new ResponseEntity<>(ApiResponse.builder()
@@ -79,7 +78,7 @@ public class EnvApiController implements EnvApi {
                 .build(), HttpStatus.OK);
     }
 
-    public ResponseEntity<ApiResponse> envDelete(@ApiParam(value = "") @RequestHeader(value = "Token", required = false) String token) {
+    public ResponseEntity<ApiResponse> envDelete() {
         String accept = request.getHeader("Accept");
 
         environment.cleanVirtualEnv();
@@ -96,7 +95,7 @@ public class EnvApiController implements EnvApi {
     }
 
 
-    public ResponseEntity<ApiResponse> envPost(@ApiParam(value = "List of env vars by key-value pair in JSON format", required = true) @Valid @RequestBody String envVars, @ApiParam(value = "Authentication Token") @RequestHeader(value = "Token", required = false) String token) {
+    public ResponseEntity<ApiResponse> envPost(@ApiParam(value = "List of env vars by key-value pair in JSON format", required = true) @Valid @RequestBody String envVars) {
         Map<String, String> envVarsToBeAdded;
         Map<String, String> virtualEnvVarsAdded;
 
