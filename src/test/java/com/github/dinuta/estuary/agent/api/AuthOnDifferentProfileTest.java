@@ -16,6 +16,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
@@ -27,7 +28,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension.class)
-public class XRequestIdTest {
+@ActiveProfiles({"test"})
+public class AuthOnDifferentProfileTest {
     private final static String SERVER_PREFIX = "http://localhost:";
 
     @LocalServerPort
@@ -46,13 +48,12 @@ public class XRequestIdTest {
     private Authentication auth;
 
     @Test
-    public void whenCallingWithXIdSetFromClientThenTheServersReturnsItBack() {
-        String xReqId = "my-provided-value";
+    public void whenCallingWithValidTokenThenInformationIsRetrivedOk() {
         Map<String, String> headers = new HashMap<>();
-        headers.put(HeaderConstants.X_REQUEST_ID, xReqId);
+        headers.put(HeaderConstants.TOKEN, "null");
 
         ResponseEntity<ApiResponse> responseEntity =
-                this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
+                this.restTemplate
                         .exchange(SERVER_PREFIX + port + "/about",
                                 HttpMethod.GET,
                                 httpRequestUtils.getRequestEntityContentTypeAppJson(null, headers),
@@ -61,7 +62,6 @@ public class XRequestIdTest {
         ApiResponse body = responseEntity.getBody();
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
-        assertThat(responseEntity.getHeaders().get(HeaderConstants.X_REQUEST_ID).get(0)).isEqualTo(xReqId); // <--
         assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
         assertThat(body.getMessage()).isEqualTo(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()));
         assertThat(body.getDescription()).isInstanceOf(Map.class);
@@ -71,27 +71,17 @@ public class XRequestIdTest {
     }
 
     @Test
-    public void whenCallingWithXIdNotSetFromClientThenTheServersReturnsANewUUIDOne() {
+    public void whenCallingWithInvalidTokenThenNotAuthorized() {
         Map<String, String> headers = new HashMap<>();
+        headers.put(HeaderConstants.TOKEN, "whateverinvalid");
 
         ResponseEntity<ApiResponse> responseEntity =
-                this.restTemplate.withBasicAuth(auth.getUser(), auth.getPassword())
+                this.restTemplate
                         .exchange(SERVER_PREFIX + port + "/about",
                                 HttpMethod.GET,
                                 httpRequestUtils.getRequestEntityContentTypeAppJson(null, headers),
                                 ApiResponse.class);
 
-        ApiResponse body = responseEntity.getBody();
-
-        assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
-        assertThat(responseEntity.getHeaders().get(HeaderConstants.X_REQUEST_ID).get(0)).isInstanceOf(String.class); // <--
-        assertThat(responseEntity.getHeaders().get(HeaderConstants.X_REQUEST_ID).get(0).length()).isEqualTo(36); // <--
-        assertThat(body.getCode()).isEqualTo(ApiResponseCode.SUCCESS.getCode());
-        assertThat(body.getMessage()).isEqualTo(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()));
-        assertThat(body.getDescription()).isInstanceOf(Map.class);
-        assertThat(body.getName()).isEqualTo(about.getAppName());
-        assertThat(body.getVersion()).isEqualTo(about.getVersion());
-        assertThat(LocalDateTime.parse(body.getTimestamp(), PATTERN)).isBefore(LocalDateTime.now());
+        assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
     }
-
 }
