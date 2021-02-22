@@ -27,15 +27,14 @@ public class FluentdService {
     private static final Logger log = LoggerFactory.getLogger(FluentdService.class);
     private final VirtualEnvironment virtualEnvironment = new VirtualEnvironment();
     private FluentLogger fluentLogger;
+    private About about;
     private EnrichedMessage enrichedMsgCopy;
 
     @Autowired
     private Environment environment;
 
-    @Autowired
-    private About about;
-
-    public FluentdService() {
+    public FluentdService(About about) {
+        this.about = about;
         this.setFluentdLogger();
     }
 
