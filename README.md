@@ -118,6 +118,14 @@ The env vars precedence is higher than the one set through the application prope
 
 - COMMAND_TIMEOUT -> This env var sets the command timeout for the system commands. Default is **1800** seconds.
 
+## Enable HTTPS
+
+Set **HTTPS_ENABLE** env var option to *true* or *false*.    
+Set the certificate path (is relative!) with **HTTPS_CERT** and **HTTPS_KEYSTORE_PASSWORD** env variables. E.g.
+HTTPS_CERT=file:https/cert.p12  
+If you do not set cert and keystore password env vars, it uses the ones from default *application.properties* in the
+resource folder.
+
 ## Environment variables injection
 
 User defined environment variables will be stored in a 'virtual' environment. The extra env vars will be used by the
