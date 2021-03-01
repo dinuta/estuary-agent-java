@@ -117,9 +117,9 @@ public class CommandRunner {
     }
 
     /**
-     * Runs the commands through the start.py script of the original python implementation.
-     * Ref: https://github.com/dinuta/estuary-agent/releases.
-     * This start.py is platform dependent and it must be downloaded in the same path along with this jar
+     * Runs the commands through the 'runcmd' binary which is written in golang
+     * Ref: https://github.com/dinuta/estuary-agent-java/releases.
+     * This 'runcmd' is platform dependent and it must be downloaded in the same path along with this jar
      *
      * @param command The commands to be executed separated by semicolon ;
      * @return A reference to a Future of {@link ProcessResult}
