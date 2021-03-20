@@ -17,6 +17,28 @@ import javax.validation.Valid;
 @RequestMapping(value = "")
 public interface CommandApi {
 
+    @ApiOperation(value = "Dumps the active commands that are running on the Agent.", nickname = "commandGetAll", notes = "", response = ApiResponse.class, tags = {"estuary-agent",})
+    @ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "All commands in memory dump success", response = ApiResponse.class),
+            @io.swagger.annotations.ApiResponse(code = 500, message = "All commands in memory dump failure", response = ApiResponse.class)})
+    @RequestMapping(value = "/commands",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    default ResponseEntity<ApiResponse> commandGetAll() {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    @ApiOperation(value = "Stops all the active commands on the Agent by terminating their corresponding process", nickname = "commandDeleteAll", notes = "", response = ApiResponse.class, tags = {"estuary-agent",})
+    @ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "All commands process terminated success", response = ApiResponse.class),
+            @io.swagger.annotations.ApiResponse(code = 500, message = "All commands process terminated failure", response = ApiResponse.class)})
+    @RequestMapping(value = "/commands",
+            produces = {"application/json"},
+            method = RequestMethod.DELETE)
+    default ResponseEntity<ApiResponse> commandDeleteAll() {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
     @ApiOperation(value = "Starts multiple commands in blocking mode sequentially. Set the client timeout at needed value.", nickname = "commandPost", notes = "", response = ApiResponse.class, tags = {"estuary-agent",})
     @ApiResponses(value = {
             @io.swagger.annotations.ApiResponse(code = 200, message = "commands start success", response = ApiResponse.class),

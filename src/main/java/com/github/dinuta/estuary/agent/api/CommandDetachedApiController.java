@@ -86,16 +86,16 @@ public class CommandDetachedApiController implements CommandDetachedApi {
             if (!testInfo.exists())
                 writeContentInFile(testInfo, commandDescription);
         } catch (IOException e) {
-            throw new ApiException(ApiResponseCode.GET_COMMAND_DETACHED_INFO_FAILURE.getCode(),
-                    ApiResponseMessage.getMessage(ApiResponseCode.GET_COMMAND_DETACHED_INFO_FAILURE.getCode()));
+            throw new ApiException(ApiResponseCode.GET_COMMAND_INFO_FAILURE.getCode(),
+                    ApiResponseMessage.getMessage(ApiResponseCode.GET_COMMAND_INFO_FAILURE.getCode()));
         }
 
         try (InputStream inputStream = new FileInputStream(testInfo)) {
             String fileContent = IOUtils.toString(inputStream, "UTF-8");
             commandDescription = objectMapper.readValue(fileContent, CommandDescription.class);
         } catch (IOException e) {
-            throw new ApiException(ApiResponseCode.GET_COMMAND_DETACHED_INFO_FAILURE.getCode(),
-                    ApiResponseMessage.getMessage(ApiResponseCode.GET_COMMAND_DETACHED_INFO_FAILURE.getCode()));
+            throw new ApiException(ApiResponseCode.GET_COMMAND_INFO_FAILURE.getCode(),
+                    ApiResponseMessage.getMessage(ApiResponseCode.GET_COMMAND_INFO_FAILURE.getCode()));
         }
 
         return new ResponseEntity<>(ApiResponse.builder()
@@ -119,8 +119,8 @@ public class CommandDetachedApiController implements CommandDetachedApi {
             String fileContent = IOUtils.toString(is, "UTF-8");
             commandDescription = objectMapper.readValue(fileContent, CommandDescription.class);
         } catch (IOException e) {
-            throw new ApiException(ApiResponseCode.GET_COMMAND_DETACHED_INFO_FAILURE.getCode(),
-                    ApiResponseMessage.getMessage(ApiResponseCode.GET_COMMAND_DETACHED_INFO_FAILURE.getCode()));
+            throw new ApiException(ApiResponseCode.GET_COMMAND_INFO_FAILURE.getCode(),
+                    ApiResponseMessage.getMessage(ApiResponseCode.GET_COMMAND_INFO_FAILURE.getCode()));
         }
 
         return new ResponseEntity<>(ApiResponse.builder()
@@ -166,8 +166,8 @@ public class CommandDetachedApiController implements CommandDetachedApi {
             commandRunner.runStartCommandInBackground(argumentsList);
             stateHolder.setLastCommand(id);
         } catch (IOException e) {
-            throw new ApiException(ApiResponseCode.COMMAND_DETACHED_START_FAILURE.getCode(),
-                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.COMMAND_DETACHED_START_FAILURE.getCode()), id));
+            throw new ApiException(ApiResponseCode.COMMAND_START_FAILURE.getCode(),
+                    String.format(ApiResponseMessage.getMessage(ApiResponseCode.COMMAND_START_FAILURE.getCode()), id));
         }
 
         return new ResponseEntity<>(ApiResponse.builder()

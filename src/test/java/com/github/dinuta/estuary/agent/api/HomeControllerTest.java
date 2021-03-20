@@ -60,7 +60,7 @@ public class HomeControllerTest {
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
         assertThat(body.get("swagger")).isEqualTo("2.0");
-        assertThat(((Map) body.get("paths")).size()).isEqualTo(11);
+        assertThat(((Map) body.get("paths")).size()).isEqualTo(12);
     }
 
 }
