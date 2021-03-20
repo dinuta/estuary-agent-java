@@ -4,12 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dinuta.estuary.agent.component.About;
 import com.github.dinuta.estuary.agent.component.ClientRequest;
 import com.github.dinuta.estuary.agent.component.CommandRunner;
+import com.github.dinuta.estuary.agent.component.ProcessHolder;
 import com.github.dinuta.estuary.agent.constants.ApiResponseCode;
 import com.github.dinuta.estuary.agent.constants.ApiResponseMessage;
 import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
 import com.github.dinuta.estuary.agent.exception.ApiException;
+import com.github.dinuta.estuary.agent.model.ProcessState;
 import com.github.dinuta.estuary.agent.model.api.ApiResponse;
 import com.github.dinuta.estuary.agent.model.api.CommandDescription;
+import com.github.dinuta.estuary.agent.utils.ProcessUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -26,6 +29,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Api(tags = {"estuary-agent"})
@@ -45,12 +49,62 @@ public class CommandApiController implements CommandApi {
     private ClientRequest clientRequest;
 
     @Autowired
+    private ProcessHolder processHolder;
+
+    @Autowired
     private About about;
 
     @Autowired
     public CommandApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
         this.request = request;
+    }
+
+    public ResponseEntity<ApiResponse> commandGetAll() {
+        String accept = request.getHeader("Accept");
+
+        log.debug("Dumping all in memory processes associated with active commands");
+        return new ResponseEntity<>(ApiResponse.builder()
+                .code(ApiResponseCode.SUCCESS.getCode())
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
+                .description(processHolder.dumpAll())
+                .name(about.getAppName())
+                .version(about.getVersion())
+                .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
+                .path(clientRequest.getRequestUri())
+                .build(), HttpStatus.OK);
+    }
+
+
+    public ResponseEntity<ApiResponse> commandDeleteAll() {
+        String accept = request.getHeader("Accept");
+        log.debug("Killing all processes associated with active commands");
+        log.debug(String.format("Active processes number: %s", processHolder.getAll().size()));
+
+        for (Map.Entry<ProcessState, String> entry : processHolder.getAll().entrySet()) {
+            ProcessState processState = entry.getKey();
+            if (processState.getProcess().isAlive()) {
+                try {
+                    ProcessUtils.killProcessAndChildren(processState);
+                } catch (Exception e) {
+                    throw new ApiException(ApiResponseCode.COMMAND_STOP_FAILURE.getCode(),
+                            ApiResponseMessage.getMessage(ApiResponseCode.COMMAND_STOP_FAILURE.getCode()));
+                }
+            }
+        }
+
+        processHolder.clearAll();
+
+        log.debug(String.format("Active processes number: %s", processHolder.getAll().size()));
+        return new ResponseEntity<>(ApiResponse.builder()
+                .code(ApiResponseCode.SUCCESS.getCode())
+                .message(ApiResponseMessage.getMessage(ApiResponseCode.SUCCESS.getCode()))
+                .description(processHolder.dumpAll())
+                .name(about.getAppName())
+                .version(about.getVersion())
+                .timestamp(LocalDateTime.now().format(DateTimeConstants.PATTERN))
+                .path(clientRequest.getRequestUri())
+                .build(), HttpStatus.OK);
     }
 
     public ResponseEntity<ApiResponse> commandPost(@ApiParam(value = "Commands to run. E.g. ls -lrt", required = true) @Valid @RequestBody String commands) {

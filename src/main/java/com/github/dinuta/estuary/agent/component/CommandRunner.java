@@ -1,6 +1,8 @@
 package com.github.dinuta.estuary.agent.component;
 
 import com.github.dinuta.estuary.agent.constants.DateTimeConstants;
+import com.github.dinuta.estuary.agent.constants.DefaultConstants;
+import com.github.dinuta.estuary.agent.constants.EnvConstants;
 import com.github.dinuta.estuary.agent.model.ProcessState;
 import com.github.dinuta.estuary.agent.model.api.CommandDescription;
 import com.github.dinuta.estuary.agent.model.api.CommandDetails;
@@ -33,9 +35,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import static com.github.dinuta.estuary.agent.constants.DefaultConstants.*;
-import static com.github.dinuta.estuary.agent.constants.EnvConstants.COMMAND_TIMEOUT;
-
 @Component
 public class CommandRunner {
     private static final Logger log = LoggerFactory.getLogger(CommandRunner.class);
@@ -48,9 +47,13 @@ public class CommandRunner {
     private static final float DENOMINATOR = 1000F;
 
     @Autowired
+    private final ProcessHolder processHolder;
+
+    @Autowired
     private final VirtualEnvironment environment;
 
-    public CommandRunner(VirtualEnvironment environment) {
+    public CommandRunner(ProcessHolder processHolder, VirtualEnvironment environment) {
+        this.processHolder = processHolder;
         this.environment = environment;
     }
 
@@ -117,9 +120,9 @@ public class CommandRunner {
     }
 
     /**
-     * Runs the commands through the 'runcmd' binary which is written in golang
-     * Ref: https://github.com/dinuta/estuary-agent-java/releases.
-     * This 'runcmd' is platform dependent and it must be downloaded in the same path along with this jar
+     * Runs the commands through the 'runcmd' utility which is a golang implementation.
+     * Ref: https://github.com/estuaryoss/estuary-agent-java/releases.
+     * 'runcmd' is platform dependent and it must be downloaded in the same path along with this jar
      *
      * @param command The commands to be executed separated by semicolon ;
      * @return A reference to a Future of {@link ProcessResult}
@@ -215,9 +218,9 @@ public class CommandRunner {
      */
     public CommandDetails getCmdDetailsOfProcess(String[] command, ProcessState processState) {
         CommandDetails commandDetails;
-        InputStream inputStream = InputStream.nullInputStream();
-        int timeout = environment.getEnvAndVirtualEnv().get(COMMAND_TIMEOUT) != null ?
-                Integer.parseInt(environment.getEnvAndVirtualEnv().get(COMMAND_TIMEOUT)) : COMMAND_TIMEOUT_DEFAULT;
+        InputStream inputStream = null;
+        int timeout = environment.getEnv().get(EnvConstants.COMMAND_TIMEOUT) != null ?
+                Integer.parseInt(environment.getEnv().get(EnvConstants.COMMAND_TIMEOUT)) : DefaultConstants.COMMAND_TIMEOUT_DEFAULT;
 
         try {
             ProcessResult processResult = processState.getProcessResult().get(timeout, TimeUnit.SECONDS);
@@ -238,14 +241,14 @@ public class CommandRunner {
             log.debug(ExceptionUtils.getStackTrace(e));
             commandDetails = CommandDetails.builder()
                     .err(ExceptionUtils.getStackTrace(e))
-                    .code(PROCESS_EXCEPTION_TIMEOUT)
+                    .code(DefaultConstants.PROCESS_EXCEPTION_TIMEOUT)
                     .args(command)
                     .build();
         } catch (Exception e) {
             log.debug(ExceptionUtils.getStackTrace(e));
             commandDetails = CommandDetails.builder()
                     .err(ExceptionUtils.getStackTrace(e))
-                    .code(PROCESS_EXCEPTION_GENERAL)
+                    .code(DefaultConstants.PROCESS_EXCEPTION_GENERAL)
                     .args(command)
                     .build();
         } finally {
@@ -256,6 +259,8 @@ public class CommandRunner {
                 log.debug(ExceptionUtils.getStackTrace(e));
             }
         }
+
+        processHolder.remove(processState);
 
         return commandDetails;
     }
@@ -270,7 +275,6 @@ public class CommandRunner {
         } else {
             platformCmd.add(EXEC_LINUX);
             platformCmd.add(ARGS_LINUX);
-
         }
 
         return platformCmd;
@@ -287,16 +291,23 @@ public class CommandRunner {
     }
 
     private ProcessState runCmdDetached(String[] command) throws IOException {
-        return getProcessState(command);
+        ProcessState processState = getProcessState(command);
+
+        processHolder.put(command, processState);
+
+        return processState;
     }
 
     private CommandDetails getCommandDetails(String[] command) throws IOException {
-        ProcessState pState = getProcessState(command);
+        ProcessState processState = getProcessState(command);
 
-        return this.getCmdDetailsOfProcess(command, pState);
+        processHolder.put(command, processState);
+
+        return this.getCmdDetailsOfProcess(command, processState);
     }
 
     private ProcessState getProcessState(String[] command) throws IOException {
+        ProcessState processState = new ProcessState();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         StartedProcess startedProcess = new ProcessExecutor()
@@ -307,12 +318,13 @@ public class CommandRunner {
                 .redirectError(outputStream)
                 .start();
 
-        return ProcessState.builder()
-                .startedProcess(startedProcess)
-                .process(startedProcess.getProcess())
-                .processResult(startedProcess.getFuture())
-                .errOutputStream(outputStream)
-                .build();
+
+        processState.startedProcess(startedProcess);
+        processState.process(startedProcess.getProcess());
+        processState.processResult(startedProcess.getFuture());
+        processState.errOutputStream(outputStream);
+
+        return processState;
     }
 
     private String doQuoteCmd(String s) {

@@ -76,6 +76,19 @@ Please download the execs from here:
 Place the platform-specific binary under the same folder from where the service started. The exec must have its name
 as **runcmd**. E.g runcmd.exe (Windows) / runcmd (Linux)
 
+Compile this exec from the repository [runcmd](https://github.com/estuaryoss/runcmd)
+
+## Commands in memory and process control
+
+Sometimes you want to send a command which will not exit and no response from the Agent will be received. In this case
+you can timeout on the clinet side, do your work on the client side, and then force Agent to kill the command process
+that hangs.  
+The endpoints are:
+
+- /command POST -> execute your blocking command
+- /commands GET -> get all commands that are curently active on the Agent
+- /commands DELETE -> stop all the processes associated with all commands.
+
 ## Eureka client registration
 
 Set the following env vars:
