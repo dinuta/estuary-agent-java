@@ -9,6 +9,8 @@ import com.github.dinuta.estuary.agent.model.api.CommandDetails;
 import com.github.dinuta.estuary.agent.model.api.CommandParallel;
 import com.github.dinuta.estuary.agent.model.api.CommandStatus;
 import com.github.dinuta.estuary.agent.utils.CommandStatusThread;
+import com.github.dinuta.estuary.agent.utils.ProcessUtils;
+import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -216,6 +218,7 @@ public class CommandRunner {
      * @param processState A reference to a {@link ProcessState}
      * @return The command details of the command executed
      */
+    @SneakyThrows
     public CommandDetails getCmdDetailsOfProcess(String[] command, ProcessState processState) {
         CommandDetails commandDetails;
         InputStream inputStream = null;
@@ -244,6 +247,7 @@ public class CommandRunner {
                     .code(DefaultConstants.PROCESS_EXCEPTION_TIMEOUT)
                     .args(command)
                     .build();
+            ProcessUtils.killProcessAndChildren(processState);
         } catch (Exception e) {
             log.debug(ExceptionUtils.getStackTrace(e));
             commandDetails = CommandDetails.builder()

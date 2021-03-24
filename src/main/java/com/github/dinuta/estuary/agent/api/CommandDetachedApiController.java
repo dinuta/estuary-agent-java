@@ -165,7 +165,7 @@ public class CommandDetachedApiController implements CommandDetachedApi {
             log.debug("Sending args: " + argumentsList.toString());
             commandRunner.runStartCommandInBackground(argumentsList);
             stateHolder.setLastCommand(id);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new ApiException(ApiResponseCode.COMMAND_START_FAILURE.getCode(),
                     String.format(ApiResponseMessage.getMessage(ApiResponseCode.COMMAND_START_FAILURE.getCode()), id));
         }
