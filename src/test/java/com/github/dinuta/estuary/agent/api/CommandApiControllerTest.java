@@ -81,7 +81,7 @@ public class CommandApiControllerTest {
     }
 
     @Test
-    public void whenSendingOneCommandAndItExceedsTheCommandTimeoutSetInTheServiceThenTimeout() {
+    public void whenSendingOneCommandAndItExceedsTheCommandTimeoutSetInTheService_ThenTimeout() {
         float sleep = 4f; // default is 3 secs
         float timeout = 3f;
         String command = "sleep " + sleep;

@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -117,7 +116,7 @@ public class CommandApiController implements CommandApi {
         CommandDescription commandDescription;
         try {
             commandDescription = commandRunner.runCommands(commandsList.toArray(new String[0]));
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new ApiException(ApiResponseCode.COMMAND_EXEC_FAILURE.getCode(),
                     ApiResponseMessage.getMessage(ApiResponseCode.COMMAND_EXEC_FAILURE.getCode()));
         }
