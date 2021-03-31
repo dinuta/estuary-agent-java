@@ -1,5 +1,7 @@
 <h1 align="center"><img src="./docs/images/banner_agent.png" alt="Estuary Agent"></h1>  
 
+## ! Repository [has moved here](https://github.com/estuaryoss/estuary-agent-java) with a different maven coordinate. The latest release was 4.1.2.
+
 The agent is written in Java (SpringBoot), and it executes low-level commands.
 
 It enables any use case which implies system commands:
